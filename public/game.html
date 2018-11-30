@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BattleBlocks</title>
+</head>
+<body>
+<header>
+    <h1>BattleBlocks</h1>
+</header>
+<main>
+    <div id="statistics">
+        <ul id="statistics-list">
+            <li id="1"></li>
+            <li id="2"></li>
+            <li id="3"></li>
+        </ul>
+    </div>
+    <div id="main-div">
+        <div id="left-board" class="game-board">
+            <div id="ships-list-left" class="ships-list">
+                <table>
+                    <tr id="list-carrier" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                    <tr id="list-battleship" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                    <tr id="list-cruiser" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                    <tr id="list-submarine" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                    <tr id="list-destroyer" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                </table>
+            </div>
+            <div id="left-board-title">
+                <p>You</p>
+            </div>
+            <div id="game-board-left" class="game-board">
+                <table class="game-board-table">
+                    <tr class="game-board-row">
+                        <td class="game-board-item"></td>
+                        <td class="game-board-item">A</td>
+                        <td class="game-board-item">B</td>
+                        <td class="game-board-item">C</td>
+                        <td class="game-board-item">D</td>
+                        <td class="game-board-item">E</td>
+                        <td class="game-board-item">F</td>
+                        <td class="game-board-item">G</td>
+                        <td class="game-board-item">H</td>
+                        <td class="game-board-item">I</td>
+                        <td class="game-board-item">J</td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>1</td>
+                        <td id='A1'></td>
+                        <td id='B1'></td>
+                        <td id='C1'></td>
+                        <td id='D1'></td>
+                        <td id='E1'></td>
+                        <td id='F1'></td>
+                        <td id='G1'></td>
+                        <td id='H1'></td>
+                        <td id='I1'></td>
+                        <td id='J1'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>2</td>
+                        <td id='A2'></td>
+                        <td id='B2'></td>
+                        <td id='C2'></td>
+                        <td id='D2'></td>
+                        <td id='E2'></td>
+                        <td id='F2'></td>
+                        <td id='G2'></td>
+                        <td id='H2'></td>
+                        <td id='I2'></td>
+                        <td id='J2'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>3</td>
+                        <td id='A3'></td>
+                        <td id='B3'></td>
+                        <td id='C3'></td>
+                        <td id='D3'></td>
+                        <td id='E3'></td>
+                        <td id='F3'></td>
+                        <td id='G3'></td>
+                        <td id='H3'></td>
+                        <td id='I3'></td>
+                        <td id='J3'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>4</td>
+                        <td id='A4'></td>
+                        <td id='B4'></td>
+                        <td id='C4'></td>
+                        <td id='D4'></td>
+                        <td id='E4'></td>
+                        <td id='F4'></td>
+                        <td id='G4'></td>
+                        <td id='H4'></td>
+                        <td id='I4'></td>
+                        <td id='J4'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>5</td>
+                        <td id='A5'></td>
+                        <td id='B5'></td>
+                        <td id='C5'></td>
+                        <td id='D5'></td>
+                        <td id='E5'></td>
+                        <td id='F5'></td>
+                        <td id='G5'></td>
+                        <td id='H5'></td>
+                        <td id='I5'></td>
+                        <td id='J5'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>6</td>
+                        <td id='A6'></td>
+                        <td id='B6'></td>
+                        <td id='C6'></td>
+                        <td id='D6'></td>
+                        <td id='E6'></td>
+                        <td id='F6'></td>
+                        <td id='G6'></td>
+                        <td id='H6'></td>
+                        <td id='I6'></td>
+                        <td id='J6'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>7</td>
+                        <td id='A7'></td>
+                        <td id='B7'></td>
+                        <td id='C7'></td>
+                        <td id='D7'></td>
+                        <td id='E7'></td>
+                        <td id='F7'></td>
+                        <td id='G7'></td>
+                        <td id='H7'></td>
+                        <td id='I7'></td>
+                        <td id='J7'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>8</td>
+                        <td id='A8'></td>
+                        <td id='B8'></td>
+                        <td id='C8'></td>
+                        <td id='D8'></td>
+                        <td id='E8'></td>
+                        <td id='F8'></td>
+                        <td id='G8'></td>
+                        <td id='H8'></td>
+                        <td id='I8'></td>
+                        <td id='J8'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>9</td>
+                        <td id='A9'></td>
+                        <td id='B9'></td>
+                        <td id='C9'></td>
+                        <td id='D9'></td>
+                        <td id='E9'></td>
+                        <td id='F9'></td>
+                        <td id='G9'></td>
+                        <td id='H9'></td>
+                        <td id='I9'></td>
+                        <td id='J9'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>10</td>
+                        <td id='A10'></td>
+                        <td id='B10'></td>
+                        <td id='C10'></td>
+                        <td id='D10'></td>
+                        <td id='E10'></td>
+                        <td id='F10'></td>
+                        <td id='G10'></td>
+                        <td id='H10'></td>
+                        <td id='I10'></td>
+                        <td id='J10'></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="left-board-bottom-p">
+                <p>Deploy your ships</p>
+            </div>
+            <form>
+                <button>READY</button>
+            </form>
+        </div>
+        <div id="right-board" class="game-board">
+            <div id="ships-list-right" class="ships-list">
+                <table>
+                    <tr id="list-carrier-right" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                    <tr id="list-battleship-right" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                    <tr id="list-cruiser-right" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                    <tr id="list-submarine-right" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                    <tr id="list-destroyer-right" class="ship-list-item">
+                        <td class="ship-part"></td>
+                        <td class="ship-part"></td>
+                    </tr>
+                    <tr class="list-row-empty"></tr>
+                </table>
+            </div>
+            <div id="right-board-title">
+                <p>Rival</p>
+            </div>
+            <div id="game-board-right" class="game-board">
+                <table class="game-board-table">
+                    <tr class="game-board-row">
+                        <td class="game-board-item"></td>
+                        <td class="game-board-item">A</td>
+                        <td class="game-board-item">B</td>
+                        <td class="game-board-item">C</td>
+                        <td class="game-board-item">D</td>
+                        <td class="game-board-item">E</td>
+                        <td class="game-board-item">F</td>
+                        <td class="game-board-item">G</td>
+                        <td class="game-board-item">H</td>
+                        <td class="game-board-item">I</td>
+                        <td class="game-board-item">J</td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>1</td>
+                        <td id='A1-right'></td>
+                        <td id='B1-right'></td>
+                        <td id='C1-right'></td>
+                        <td id='D1-right'></td>
+                        <td id='E1-right'></td>
+                        <td id='F1-right'></td>
+                        <td id='G1-right'></td>
+                        <td id='H1-right'></td>
+                        <td id='I1-right'></td>
+                        <td id='J1-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>2</td>
+                        <td id='A2-right'></td>
+                        <td id='B2-right'></td>
+                        <td id='C2-right'></td>
+                        <td id='D2-right'></td>
+                        <td id='E2-right'></td>
+                        <td id='F2-right'></td>
+                        <td id='G2-right'></td>
+                        <td id='H2-right'></td>
+                        <td id='I2-right'></td>
+                        <td id='J2-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>3</td>
+                        <td id='A3-right'></td>
+                        <td id='B3-right'></td>
+                        <td id='C3-right'></td>
+                        <td id='D3-right'></td>
+                        <td id='E3-right'></td>
+                        <td id='F3-right'></td>
+                        <td id='G3-right'></td>
+                        <td id='H3-right'></td>
+                        <td id='I3-right'></td>
+                        <td id='J3-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>4</td>
+                        <td id='A4-right'></td>
+                        <td id='B4-right'></td>
+                        <td id='C4-right'></td>
+                        <td id='D4-right'></td>
+                        <td id='E4-right'></td>
+                        <td id='F4-right'></td>
+                        <td id='G4-right'></td>
+                        <td id='H4-right'></td>
+                        <td id='I4-right'></td>
+                        <td id='J4-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>5</td>
+                        <td id='A5-right'></td>
+                        <td id='B5-right'></td>
+                        <td id='C5-right'></td>
+                        <td id='D5-right'></td>
+                        <td id='E5-right'></td>
+                        <td id='F5-right'></td>
+                        <td id='G5-right'></td>
+                        <td id='H5-right'></td>
+                        <td id='I5-right'></td>
+                        <td id='J5-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>6</td>
+                        <td id='A6-right'></td>
+                        <td id='B6-right'></td>
+                        <td id='C6-right'></td>
+                        <td id='D6-right'></td>
+                        <td id='E6-right'></td>
+                        <td id='F6-right'></td>
+                        <td id='G6-right'></td>
+                        <td id='H6-right'></td>
+                        <td id='I6-right'></td>
+                        <td id='J6-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>7</td>
+                        <td id='A7-right'></td>
+                        <td id='B7-right'></td>
+                        <td id='C7-right'></td>
+                        <td id='D7-right'></td>
+                        <td id='E7-right'></td>
+                        <td id='F7-right'></td>
+                        <td id='G7-right'></td>
+                        <td id='H7-right'></td>
+                        <td id='I7-right'></td>
+                        <td id='J7-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>8</td>
+                        <td id='A8-right'></td>
+                        <td id='B8-right'></td>
+                        <td id='C8-right'></td>
+                        <td id='D8-right'></td>
+                        <td id='E8-right'></td>
+                        <td id='F8-right'></td>
+                        <td id='G8-right'></td>
+                        <td id='H8-right'></td>
+                        <td id='I8-right'></td>
+                        <td id='J8-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>9</td>
+                        <td id='A9-right'></td>
+                        <td id='B9-right'></td>
+                        <td id='C9-right'></td>
+                        <td id='D9-right'></td>
+                        <td id='E9-right'></td>
+                        <td id='F9-right'></td>
+                        <td id='G9-right'></td>
+                        <td id='H9-right'></td>
+                        <td id='I9-right'></td>
+                        <td id='J9-right'></td>
+                    </tr>
+                    <tr>
+                        <td class='game-board-item'>10</td>
+                        <td id='A10-right'></td>
+                        <td id='B10-right'></td>
+                        <td id='C10-right'></td>
+                        <td id='D10-right'></td>
+                        <td id='E10-right'></td>
+                        <td id='F10-right'></td>
+                        <td id='G10-right'></td>
+                        <td id='H10-right'></td>
+                        <td id='I10-right'></td>
+                        <td id='J10-right'></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

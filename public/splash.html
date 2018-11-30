@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BattleBlocks</title>
+    <link type="text/css" rel="stylesheet" href="stylesheets/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type='text/javascript' src='javascripts/script.js'></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200|Roboto:100" rel="stylesheet">
+</head>
+<body>
+<header>
+    <h1>BATTLESHIPS</h1>
+</header>
+<div id="statistics">
+    <ul id="statistics-list">
+        <li id="1">First statistic</li>
+        <li id="2">Second statistic</li>
+        <li id="3">Third statistic</li>
+    </ul>
+</div>
+<main>
+    <div id="main-div">
+        <div id="default-splash">
+            <div id="button-div">
+                <button id="play" onclick="setPlayDiv()">PLAY</button>
+                <button id="rules" onclick="gotToRules()">RULES</button>
+            </div>
+            <div id="play-div">
+                <button id="join-random">join random</button>
+                <button id="join-friend">join friend</button>
+                <button id="host-game">host game</button>
+                <button id="cancel" onclick="setButtonDiv()">Cancel</button>
+            </div>
+            <div id="image-div">
+                <img src="">
+            </div>
+        </div>
+        <div id="rules-div">
+            <div id="goal-text">
+                <p>Goal: Arrange your ships and be the first to destroy all enemy ships</p>
+            </div>
+            <div id="controls-div">
+                <img src="">
+                <img src="">
+                <img src="">
+                <div id="control-1">
+                    <h3 class="control-header-text">Control #1</h3>
+                    <p class="control-p-text">Drag and drop ship</p>
+                </div>
+                <div id="control-2">
+                    <h3 class="control-header-text">Control #2</h3>
+                    <p class="control-p-text">Drag and drop ship</p>
+                </div>
+                <div id="control-3">
+                    <h3 class="control-header-text">Control #3</h3>
+                    <p class="control-p-text">Drag and drop ship</p>
+                </div>
+
+            </div>
+            <button id="return" onclick="returnToDef()">Return</button>
+        </div>
+    </div>
+</main>
+</body>
+</html>
