@@ -3,53 +3,68 @@ body {
     font-family: Roboto, sans-serif;
     background: #F5F5F5;
     width: 100%;
-}
-
-div {
-
+    box-sizing: border-box;
 }
 
 #statistics {
     display: inline-block;
-    margin-left: 50px;
-
+    text-align: left;
+    width: 8em;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
 }
 
-#statistics-list {
-    /*list-style-type: none;*/
-    border: 1px solid red;
+#statistics h1 {
+    text-align: center;
+    border-bottom: solid 1px #ababab;
+    font-size: 1em;
+    margin: 0;
+    padding: 0.5em;
 }
 
-#main-div {
-    margin-top: 15em;
+#statistics p {
+    font-weight: 600;
+    font-size: 0.8em;
+}
+
+#container {
     display: inline-flex;
     flex-direction: column;
 }
 
 main {
+    position: relative;
+    margin-top: 5%;
     text-align: center;
-    margin-top: 5em;
     justify-content: center;
-    width: 100%;
 }
 
-#default-splash, #rules-div {
+.card {
     background: #fff;
     border-radius: 2px;
     margin: 1rem;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12), 0 3px 3px -2px rgba(0, 0, 0, 0.4);
     justify-content: center;
     align-items: center;
+    width: 50em;
+    height: 30em;
 }
 
-#goal-text, header {
+#goal-text, header, #join-message {
     text-align: center;
     border-bottom: solid 0.1em #ababab;
-    font-size: 0.9em;
+    font-size: 1.3em;
     font-weight: 600;
     color: rgba(0,0,0,0.6);
     margin: 0;
-    padding: 0.5em;
+}
+
+#join-message {
+    width: 50%;
+    margin: auto auto 2em auto;
+    font-size: 1em;
+    color: rgba(0,0,0, 0.9);;
 }
 
 button {
@@ -57,11 +72,10 @@ button {
     color: white;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
     background: #3f3f3f;
-    width: 8em;
+    width: 10em;
     transition: background 0.5s;
     border: none;
-    height: 3em;
-    display: block;
+    height: 4em;
     margin: 0.5em;
 }
 
@@ -71,14 +85,68 @@ button:hover {
     transition: background 0.5s;
 }
 
-#button-div, #play-div {
+.button-container {
     float: right;
+    width: 49.5%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#play-div {
-    display: none;
+#image-div {
+    float: left;
+    width: 49.5%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#rules-div{
+#controls-div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.control-img{
+    margin: 1em 3em 0 3em;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+#play-buttons button, #main-buttons button {
+    display: block;
+}
+
+#return {
+    margin-top: 3em;
+}
+
+.friend-buttons {
+    width: 9em;
+    height: 3em;
+}
+
+#join-friend-div {
+    width: 100%;
+}
+
+#input {
+    margin-bottom: 1em;
+}
+
+input {
+    font-size: 0.95em;
+    padding:10px 10px 10px 5px;
+    display: inline-block;
+    border:none;
+    border-bottom:1px solid #757575;
+    width: 7em;
+}
+
+input:focus {
+    outline: none;
+}
+
+#play-buttons, #rules-div, #join-friend-div {
     display: none;
 }
