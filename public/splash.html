@@ -10,7 +10,7 @@
 </head>
 <body>
 <header>
-    <h1>BATTLESHIPS</h1>
+    <h1>BATTLEBLOCKS</h1>
 </header>
 <main>
     <div id="statistics">
@@ -27,7 +27,7 @@
                     <button id="rules" onclick="gotToRules()">RULES</button>
                 </div>
                 <div id="play-buttons">
-                    <button id="join-random">JOIN RANDOM</button>
+                    <button id="join-random" onclick="location.href='game.html'">JOIN RANDOM</button>
                     <button id="join-friend" onclick="joinFriend()">JOIN FRIEND</button>
                     <button id="host-game">HOST GAME</button>
                     <button id="cancel" onclick="setButtonDiv()">CANCEL</button>
@@ -37,11 +37,12 @@
                     <form method="post" action="" novalidate>
                         <div id="input">
                             <label for="friend-code">#</label>
-                            <input id="friend-code" name="friend-code" type="text" placeholder="00000" maxlength="5" minlength="5">
+                            <input id="friend-code" name="friend-code" type="text" placeholder="00000" maxlength="5"
+                                   minlength="5">
                         </div>
                         <button class="friend-buttons" type="submit">JOIN</button>
                     </form>
-                    <button  class="friend-buttons" onclick="setPlayDiv()">CANCEL</button>
+                    <button class="friend-buttons" onclick="setPlayDiv()">CANCEL</button>
                 </div>
             </div>
             <div id="image-div">
@@ -53,22 +54,26 @@
                 <p>Goal: Arrange your ships and be the first to destroy all enemy ships</p>
             </div>
             <div id="controls-div">
-
-                    <div>
-                        <img class="control-img" src="https://via.placeholder.com/150" alt="https://via.placeholder.com/150">
-                        <h3 class="control-header-text">Control #1</h3>
-                        <p class="control-p-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vestibulum.</p>
-                    </div>
-                    <div>
-                        <img class="control-img" src="https://via.placeholder.com/150" alt="https://via.placeholder.com/150">
-                        <h3 class="control-header-text">Control #2</h3>
-                        <p class="control-p-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vestibulum.</p>
-                    </div>
-                    <div>
-                        <img class="control-img" src="https://via.placeholder.com/150" alt="https://via.placeholder.com/150">
-                        <h3 class="control-header-text">Control #3</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vestibulum.</p>
-                    </div>
+                <div>
+                    <img class="control-img" src="https://via.placeholder.com/150"
+                         alt="https://via.placeholder.com/150">
+                    <h3>Control #1</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+                        vestibulum.</p>
+                </div>
+                <div>
+                    <img class="control-img" src="https://via.placeholder.com/150"
+                         alt="https://via.placeholder.com/150">
+                    <h3>Control #2</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+                        vestibulum.</p>
+                </div>
+                <div>
+                    <img class="control-img" src="https://via.placeholder.com/150"
+                         alt="https://via.placeholder.com/150">
+                    <h3>Control #3</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vestibulum.</p>
+                </div>
             </div>
             <button id="return" onclick="returnToDef()">Got it!</button>
         </div>
