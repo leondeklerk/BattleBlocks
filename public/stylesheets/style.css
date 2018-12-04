@@ -150,3 +150,63 @@ input:focus {
 #play-buttons, #rules-div, #join-friend-div {
     display: none;
 }
+
+/** game **/
+.game-board {
+    height: 100%;
+    width: 49.5%;
+}
+
+.board-title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}
+.board-title p {
+    text-align: center;
+    border-bottom: solid 1px #ababab;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: rgba(0,0,0,0.6);
+    margin: 0;
+    width: 75%;
+}
+
+.board-bottom p{
+    font-size: 1.2em;
+}
+#left-board {
+    float: left;
+    border-right: solid 1px #ababab;
+}
+
+#right-board {
+    float: right;
+    border-left: solid 1px #ababab;
+}
+
+#game-card {
+    width:70em;
+    height: 35em;
+}
+
+.list-row-empty {
+    height: 0.4em;
+}
+
+td {
+    background: #3f3f3f;
+    width: 0.5em;
+    height: 0.5em;
+}
+
+#ships-list-left {
+    float: left;
+    margin: 3em 0 0 3em;
+}
+
+#ships-list-right {
+    float: right;
+    margin: 3em 3em 0 0;
+}

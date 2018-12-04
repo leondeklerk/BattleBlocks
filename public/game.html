@@ -13,107 +13,103 @@
     <h1>BattleBlocks</h1>
 </header>
 <main>
-    <div id="statistics">
-        <h1>STATISTICS</h1>
-        <p id="first-stat">Stat 1</p>
-        <p id="second-stat">Stat 2</p>
-        <p id="third-stat">Stat 3</p>
-    </div>
+    <!--<div id="statistics">-->
+        <!--<h1>STATISTICS</h1>-->
+        <!--<p id="first-stat">Stat 1</p>-->
+        <!--<p id="second-stat">Stat 2</p>-->
+        <!--<p id="third-stat">Stat 3</p>-->
+    <!--</div>-->
     <div id="container">
-        <div id="left-board" class="game-board">
-            <div id="ships-list-left" class="ships-list">
-                <table>
-                    <tr id="list-carrier" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                    <tr id="list-battleship" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                    <tr id="list-cruiser" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                    <tr id="list-submarine" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                    <tr id="list-destroyer" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                </table>
+        <div id='game-card' class="card">
+            <div id="left-board" class="game-board">
+                <div class="board-title">
+                    <p>You</p>
+                </div>
+                <div id="ships-list-left" class="ships-list">
+                    <table>
+                        <tr id="list-carrier" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                        <tr id="list-battleship" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                        <tr id="list-cruiser" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                        <tr id="list-submarine" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                        <tr id="list-destroyer" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                    </table>
+                </div>
+                <div id="game-board-left" class="board">
+                </div>
+                <div class="board-bottom">
+                    <p>Deploy your ships</p>
+                    <button>READY</button>
+                </div>
             </div>
-            <div id="left-board-title">
-                <p>You</p>
-            </div>
-            <div id="game-board-left" class="game-board">
-                <table class="game-board-table">
-                </table>
-            </div>
-            <div id="left-board-bottom-p">
-                <p>Deploy your ships</p>
-            </div>
-            <form>
-                <button>READY</button>
-            </form>
-        </div>
-        <div id="right-board" class="game-board">
-            <div id="ships-list-right" class="ships-list">
-                <table>
-                    <tr id="list-carrier-right" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                    <tr id="list-battleship-right" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                    <tr id="list-cruiser-right" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                    <tr id="list-submarine-right" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                    <tr id="list-destroyer-right" class="ship-list-item">
-                        <td class="ship-part"></td>
-                        <td class="ship-part"></td>
-                    </tr>
-                    <tr class="list-row-empty"></tr>
-                </table>
-            </div>
-            <div id="right-board-title">
-                <p>Rival</p>
-            </div>
-            <div id="game-board-right" class="game-board">
-                <table class="game-board-table">
-                </table>
+            <div id="right-board" class="game-board">
+                <div class="board-title">
+                    <p>Rival</p>
+                </div>
+                <div id="ships-list-right" class="ships-list">
+                    <table>
+                        <tr id="list-carrier-right" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                        <tr id="list-battleship-right" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                        <tr id="list-cruiser-right" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                        <tr id="list-submarine-right" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                        <tr id="list-destroyer-right" class="ship-list-item">
+                            <td class="ship-part"></td>
+                            <td class="ship-part"></td>
+                        </tr>
+                        <tr class="list-row-empty"></tr>
+                    </table>
+                </div>
+                <div id="game-board-right" class="board">
+                </div>
             </div>
         </div>
     </div>
