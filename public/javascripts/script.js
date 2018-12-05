@@ -22,4 +22,3 @@ function joinFriend() {
     $("#play-buttons").hide();
     $("#join-friend-div").show();
 }
-
