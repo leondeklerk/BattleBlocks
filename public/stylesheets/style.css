@@ -243,3 +243,15 @@ td {
     background: #3f3f3f;
     border: 0.01em solid #3f3f3f;
 }
+
+.occupied {
+    background: green;
+}
+
+.end {
+    background: blue;
+}
+
+.start {
+    background: red;
+}
