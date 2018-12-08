@@ -1,9 +1,9 @@
 for (let i = 0; i < 10; i++) {
-    $("#game-board-left").append("<div class='board-row-inactive' id='l-row-" + i + "'></div>");
-    $("#game-board-right").append("<div class='board-row-active' id='r-row-" + i + "'></div>");
+    $("#game-board-left").append("<div class='board-row-active' id='l-row-" + i + "'></div>");
+    $("#game-board-right").append("<div class='board-row-inactive' id='r-row-" + i + "'></div>");
     for (let j = 0; j < 10; j++) {
-        $("#l-row-" + i).append("<div class='game-board-square-inactive' id='l-square-" + i + j + "'></div>");
-        $("#r-row-" + i).append("<div class='game-board-square-active' id='r-square-" + i + j + "'></div>");
+        $("#l-row-" + i).append("<div class='game-board-square-active' id='l-square-" + i + j + "'></div>");
+        $("#r-row-" + i).append("<div class='game-board-square-inactive' id='r-square-" + i + j + "'></div>");
     }
 }
 
@@ -41,57 +41,37 @@ function setupBoard(fleet) {
         let startPos = getRandomInt(maxStartPos);
         let randomInt = getRandomInt(9);
 
-        if (horizontal) { //horizontal placement
-            let controlNum = 1;
-            while (controlNum > 0) {
-                let clear = true;
+        let controlNum = 1;
+        while (controlNum > 0) {
+            let clear = true;
+            if (horizontal) {
                 for (let j = startPos; j < startPos + curShipLength; j++) {
                     if ($("#l-square-" + randomInt + j).hasClass('occupied')) {
                         clear = false
                     }
                 }
-                if (!clear) {
-                    startPos = getRandomInt(maxStartPos);
-                    randomInt = getRandomInt(9);
-                } else {
-                    controlNum = 0;
-                }
-            }
-
-            for (let k = startPos; k < startPos + curShipLength; k++) {
-                $(`#l-square-${randomInt}${k}`).addClass("occupied " + curShip.name);
-                if (k === startPos) {
-                    $("#l-square-" + randomInt + k).addClass("start");
-                } else if (k === startPos + curShipLength - 1) {
-                    $("#l-square-" + randomInt + k).addClass("end");
-                }
-
-            }
-        } else { //vertical placement
-            let controlNum = 1;
-            while (controlNum > 0) {
-                let clear = true;
+            } else {
                 for (let j = startPos; j < startPos + curShipLength; j++) {
                     if ($("#l-square-" + j + randomInt).hasClass('occupied')) {
                         clear = false
                     }
                 }
-                if (!clear) {
-                    startPos = getRandomInt(maxStartPos);
-                    randomInt = getRandomInt(9);
-                } else {
-                    controlNum = 0;
-                }
             }
+            if (!clear) {
+                startPos = getRandomInt(maxStartPos);
+                randomInt = getRandomInt(9);
+            } else {
+                controlNum = 0;
+            }
+        }
 
+        if (horizontal) {
             for (let k = startPos; k < startPos + curShipLength; k++) {
-                $(`#l-square-${k}${randomInt}`).addClass("occupied " + curShip.name);
-                if (k === startPos) {
-                    $("#l-square-" + k + randomInt).addClass("start");
-                } else if (k === startPos + curShipLength - 1) {
-                    $("#l-square-" + k + randomInt).addClass("end");
-                }
-
+                $("#l-square-" + randomInt + k).addClass("occupied " + curShip.name + " horizontal");
+            }
+        } else {
+            for (let k = startPos; k < startPos + curShipLength; k++) {
+                $("#l-square-" + k + randomInt).addClass("occupied " + curShip.name + " vertical");
             }
         }
     }
@@ -103,6 +83,133 @@ function main() {
     let playerFleet = new PlayerFleet("first player");
     playerFleet.initShips();
     setupBoard(playerFleet);
+    let curSquare;
+    let newSquares = [];
+    let listSquares = [];
+    let newClass = ".new";
+    let oldClass = ".old";
+
+    $(document).mouseup(function () {
+        $(".game-board-square-active").off("mouseenter mouseleave");
+        let reSet = true;
+        if ($(newClass).length <= 0) {
+            reSet = false;
+        }
+
+        if (reSet) {
+            $(newClass).addClass($(oldClass).attr('class')).removeClass("new old");
+            $(oldClass).removeClass().addClass("game-board-square-active");
+        } else {
+            $(oldClass).removeClass("old");
+        }
+
+        newSquares = [];
+        listSquares = [];
+        curSquare = null;
+        return false;
+    });
+
+    $(document).on("mousedown", ".occupied", function () {
+        if (($(this).hasClass('occupied'))) {
+
+            let horizontal = $(this).hasClass("horizontal");
+            curSquare = $(this);
+            let classList = $(curSquare).attr('class').split(/\s+/);
+            let shipType = classList[2];
+            let curLength;
+
+            for (let i in playerFleet.ships) {
+                if (playerFleet.ships[i].name === shipType) {
+                    curLength = playerFleet.ships[i].length;
+                }
+            }
+
+            let id = curSquare.attr('id');
+            let squareRow = id.slice(-2, -1);
+            let squareColumn = id.slice(-1);
+            let colOrRow;
+            let squareID;
+            if (horizontal) {
+                colOrRow = squareColumn;
+            } else {
+                colOrRow = squareRow;
+            }
+
+            for (let k = parseInt(colOrRow) - parseInt(curLength); k < parseInt(colOrRow) + parseInt(curLength); k++) {
+                if (horizontal) {
+                    squareID = squareRow + k;
+                } else {
+                    squareID = k + squareColumn;
+                }
+
+                if ($("#l-square-" + squareID).hasClass('occupied ' + shipType)) {
+                    listSquares.push("l-square-" + squareID);
+                }
+            }
+
+            let curSquarePos;
+            for (let i in listSquares) {
+                if (listSquares[i] === id) {
+                    curSquarePos = i;
+                }
+            }
+
+            $("." + shipType).addClass("old");
+            $(".game-board-square-active").hover(
+                function () {
+                    let hoverRow = $(this).attr('id').slice(-2, -1);
+                    let hoverColumn = $(this).attr('id').slice(-1);
+                    let newRow;
+                    let newColumn;
+
+                    if (horizontal) {
+                        for (let i in listSquares) {
+                            let oldColumn = listSquares[i].slice(-1);
+                            let diff = parseInt(hoverColumn) - parseInt(squareColumn);
+                            newColumn = parseInt(oldColumn) + parseInt(diff);
+                            newSquares[i] = ("l-square-" + hoverRow + newColumn);
+                        }
+                    } else {
+                        for (let i in listSquares) {
+                            let oldRow = listSquares[i].slice(-2, -1);
+                            let diff = parseInt(hoverRow) - parseInt(squareRow);
+                            newRow = parseInt(oldRow) + parseInt(diff);
+                            newSquares[i] = ("l-square-" + newRow + hoverColumn);
+                        }
+                    }
+
+                    let clear = true;
+                    for (let i in newSquares) {
+                        let temp = newSquares[i].split("-");
+                        if (temp[2].length !== 2) {
+                            clear = false;
+                            break;
+                        }
+
+                        if (!$("#" + newSquares[i]).hasClass(shipType) && $("#" + newSquares[i]).hasClass("occupied")) {
+                            clear = false;
+                            break;
+                        }
+                    }
+
+                    if ($(this).attr('id') === curSquare.attr('id')) {
+                        clear = false;
+                    }
+
+                    if (clear) {
+                        for (let i in newSquares) {
+                            $("#" + newSquares[i]).addClass("new");
+                        }
+                    }
+                },
+                function () {
+                    $(newClass).removeClass("new");
+                }
+            );
+        }
+
+        return false;
+    });
 }
 
 // var boardContainer = $("#game-board-right");
@@ -171,7 +278,7 @@ function main() {
 //     }
 //     e.stopPropagation();
 //
-//     //TODO:
+//
 //     //Switch active/inactive boards
 //     //Player 2 fires
 // }

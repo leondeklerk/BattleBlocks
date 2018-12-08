@@ -239,19 +239,20 @@ td {
     border: 0.01em solid #ababab;
 }
 
-.game-board-square-active:hover {
-    background: #3f3f3f;
-    border: 0.01em solid #3f3f3f;
-}
+/*.game-board-square-active:hover {*/
+    /*background: #3f3f3f;*/
+    /*border: 0.01em solid #3f3f3f;*/
+/*}*/
 
 .occupied {
-    background: green;
+    background: rgba(42, 42, 42, 0.75);
+    border: 0.01em solid rgba(42, 42, 42, 0.6);
 }
 
-.end {
-    background: blue;
+.old {
+    opacity: 0.5;
 }
 
-.start {
-    background: red;
+.new {
+    background: lightgreen;
 }
