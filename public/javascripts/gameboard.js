@@ -32,7 +32,7 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * (Math.floor(max) + 1));
 }
 
-function setupBoard(fleet) {
+function setupBoard(fleet, side) {
     for (let i = 0; i < fleet.ships.length; i++) {
         let horizontal = Math.random() >= 0.5;
         let curShip = fleet.ships[i];
@@ -40,19 +40,20 @@ function setupBoard(fleet) {
         let maxStartPos = 9 - curShipLength;
         let startPos = getRandomInt(maxStartPos);
         let randomInt = getRandomInt(9);
+        let pref = "#" + side + "-square-";
 
         let controlNum = 1;
         while (controlNum > 0) {
             let clear = true;
             if (horizontal) {
                 for (let j = startPos; j < startPos + curShipLength; j++) {
-                    if ($("#l-square-" + randomInt + j).hasClass('occupied')) {
+                    if ($(pref + randomInt + j).hasClass('occupied')) {
                         clear = false
                     }
                 }
             } else {
                 for (let j = startPos; j < startPos + curShipLength; j++) {
-                    if ($("#l-square-" + j + randomInt).hasClass('occupied')) {
+                    if ($(pref + j + randomInt).hasClass('occupied')) {
                         clear = false
                     }
                 }
@@ -67,12 +68,16 @@ function setupBoard(fleet) {
 
         if (horizontal) {
             for (let k = startPos; k < startPos + curShipLength; k++) {
-                $("#l-square-" + randomInt + k).addClass("occupied " + curShip.name + " horizontal");
+                $(pref + randomInt + k).addClass("occupied " + curShip.name + " horizontal");
             }
         } else {
             for (let k = startPos; k < startPos + curShipLength; k++) {
-                $("#l-square-" + k + randomInt).addClass("occupied " + curShip.name + " vertical");
+                $(pref + k + randomInt).addClass("occupied " + curShip.name + " vertical");
             }
+        }
+
+        if(side === "l"){
+            $(".game-board-square-active.occupied").addClass("drag");
         }
     }
 }
@@ -80,134 +85,251 @@ function setupBoard(fleet) {
 $(document).ready(main());
 
 function main() {
-    let playerFleet = new PlayerFleet("first player");
-    playerFleet.initShips();
-    setupBoard(playerFleet);
+    let playerFleetP1 = new PlayerFleet("first player");
+    let playerFleetP2 = new PlayerFleet("second player");
+    playerFleetP1.initShips();
+    playerFleetP2.initShips();
+    setupBoard(playerFleetP1, "l");
     let curSquare;
     let newSquares = [];
-    let listSquares = [];
-    let newClass = ".new";
-    let oldClass = ".old";
+    let oldSquares = [];
+
+    $("#dep").click(function () {
+        $(".drag").removeClass("drag");
+        $(".board-bottom").hide();
+        setupBoard(playerFleetP2, "r");
+        return false;
+    });
+
+    $(".game-board-square-active").click(function () {
+        if ($(this).hasClass('drag')) {
+            let horizontal;
+            if ($(this).hasClass('horizontal')) {
+                horizontal = true;
+            }
+
+            let oldSquaresList = [];
+            let newSquaresList = [];
+            let clickedPos;
+            let squareToTest;
+
+            curSquare = $(this);
+            let id = curSquare.attr('id');
+            let squareRow = id.slice(-2, -1);
+            let squareColumn = id.slice(-1);
+            let classList = curSquare.attr('class').split(/\s+/);
+            let shipType = classList[2];
+
+            let k = 2;
+
+            if (horizontal) {
+                squareToTest = $("#l-square-" + squareRow + (squareColumn - 1));
+            } else {
+                squareToTest = $("#l-square-" + (parseInt(squareRow) - 1) + squareColumn);
+            }
+
+            while (squareToTest.hasClass(shipType)) {
+                oldSquaresList.push(squareToTest.attr('id'));
+                if (horizontal) {
+                    squareToTest = $("#l-square-" + squareRow + (squareColumn - k));
+                } else {
+                    squareToTest = $("#l-square-" + (parseInt(squareRow) - k) + squareColumn);
+                }
+                k++;
+            }
+
+            oldSquaresList.push(id);
+
+            k = 2;
+            if (horizontal) {
+                squareToTest = $("#l-square-" + squareRow + (parseInt(squareColumn) + 1));
+            } else {
+                squareToTest = $("#l-square-" + (parseInt(squareRow) + 1) + squareColumn);
+            }
+
+            while (squareToTest.hasClass(shipType)) {
+                oldSquaresList.push(squareToTest.attr('id'));
+                if (horizontal) {
+                    squareToTest = $("#l-square-" + squareRow + (parseInt(squareColumn) + k));
+                } else {
+                    squareToTest = $("#l-square-" + (parseInt(squareRow) + k) + squareColumn);
+                }
+                k++;
+            }
+
+            oldSquaresList.sort();
+
+            for (let i in oldSquaresList) {
+                if (oldSquaresList[i] === id) {
+                    clickedPos = i;
+                }
+            }
+
+
+            for (let i = 0; i < clickedPos; i++) {
+                let firstPart = oldSquaresList[i].slice(0, -2);
+                if (horizontal) {
+                    newSquaresList.push(firstPart + (parseInt(squareRow) - (i + 1)) + squareColumn);
+                } else {
+                    newSquaresList.push(firstPart + squareRow + (parseInt(squareColumn) - (i + 1)));
+                }
+            }
+
+            newSquaresList.push(id);
+
+            for (let i = parseInt(clickedPos) + 1; i < oldSquaresList.length; i++) {
+                let firstPart = oldSquaresList[i].slice(0, -2);
+                if (horizontal) {
+                    newSquaresList.push(firstPart + (parseInt(squareRow) + i - clickedPos) + squareColumn);
+                } else {
+                    newSquaresList.push(firstPart + squareRow + (parseInt(squareColumn) + i - clickedPos));
+                }
+            }
+
+            let clear = true;
+            for (let i  in newSquaresList) {
+                let temp = newSquaresList[i].split("-");
+                if ((newSquaresList[i] !== id && $("#" + newSquaresList[i]).hasClass('drag')) || temp[2].length !== 2) {
+                    clear = false;
+                    break;
+                }
+            }
+
+            if (clear) {
+                for (let i in oldSquaresList) {
+                    let selectorNew = $("#" + newSquaresList[i]);
+                    let selectorOld = $("#" + oldSquaresList[i]);
+                    if (newSquaresList[i] !== id) {
+                        selectorNew.addClass(selectorOld.attr('class'));
+                        selectorOld.removeClass().addClass("game-board-square-active");
+                    }
+                    if (horizontal) {
+                        selectorNew.removeClass('horizontal').addClass('vertical');
+                    } else {
+                        selectorNew.removeClass('vertical').addClass('horizontal');
+                    }
+
+                }
+            }
+        }
+        return false;
+    });
 
     $(document).mouseup(function () {
         $(".game-board-square-active").off("mouseenter mouseleave");
         let reSet = true;
-        if ($(newClass).length <= 0) {
+        if ($(".new").length <= 0) {
             reSet = false;
         }
 
         if (reSet) {
-            $(newClass).addClass($(oldClass).attr('class')).removeClass("new old");
-            $(oldClass).removeClass().addClass("game-board-square-active");
+            $(".new").addClass($(".old").attr('class')).removeClass("new old");
+            $(".old").removeClass().addClass("game-board-square-active");
         } else {
-            $(oldClass).removeClass("old");
+            $(".old").removeClass("old");
         }
 
         newSquares = [];
-        listSquares = [];
+        oldSquares = [];
         curSquare = null;
         return false;
     });
 
-    $(document).on("mousedown", ".occupied", function () {
-        if (($(this).hasClass('occupied'))) {
+    $(document).on("mousedown", ".drag", function () {
+        let horizontal = $(this).hasClass("horizontal");
+        curSquare = $(this);
+        let classList = $(curSquare).attr('class').split(/\s+/);
+        let shipType = classList[2];
+        let curLength;
 
-            let horizontal = $(this).hasClass("horizontal");
-            curSquare = $(this);
-            let classList = $(curSquare).attr('class').split(/\s+/);
-            let shipType = classList[2];
-            let curLength;
-
-            for (let i in playerFleet.ships) {
-                if (playerFleet.ships[i].name === shipType) {
-                    curLength = playerFleet.ships[i].length;
-                }
+        for (let i in playerFleetP1.ships) {
+            if (playerFleetP1.ships[i].name === shipType) {
+                curLength = playerFleetP1.ships[i].length;
             }
-
-            let id = curSquare.attr('id');
-            let squareRow = id.slice(-2, -1);
-            let squareColumn = id.slice(-1);
-            let colOrRow;
-            let squareID;
-            if (horizontal) {
-                colOrRow = squareColumn;
-            } else {
-                colOrRow = squareRow;
-            }
-
-            for (let k = parseInt(colOrRow) - parseInt(curLength); k < parseInt(colOrRow) + parseInt(curLength); k++) {
-                if (horizontal) {
-                    squareID = squareRow + k;
-                } else {
-                    squareID = k + squareColumn;
-                }
-
-                if ($("#l-square-" + squareID).hasClass('occupied ' + shipType)) {
-                    listSquares.push("l-square-" + squareID);
-                }
-            }
-
-            let curSquarePos;
-            for (let i in listSquares) {
-                if (listSquares[i] === id) {
-                    curSquarePos = i;
-                }
-            }
-
-            $("." + shipType).addClass("old");
-            $(".game-board-square-active").hover(
-                function () {
-                    let hoverRow = $(this).attr('id').slice(-2, -1);
-                    let hoverColumn = $(this).attr('id').slice(-1);
-                    let newRow;
-                    let newColumn;
-
-                    if (horizontal) {
-                        for (let i in listSquares) {
-                            let oldColumn = listSquares[i].slice(-1);
-                            let diff = parseInt(hoverColumn) - parseInt(squareColumn);
-                            newColumn = parseInt(oldColumn) + parseInt(diff);
-                            newSquares[i] = ("l-square-" + hoverRow + newColumn);
-                        }
-                    } else {
-                        for (let i in listSquares) {
-                            let oldRow = listSquares[i].slice(-2, -1);
-                            let diff = parseInt(hoverRow) - parseInt(squareRow);
-                            newRow = parseInt(oldRow) + parseInt(diff);
-                            newSquares[i] = ("l-square-" + newRow + hoverColumn);
-                        }
-                    }
-
-                    let clear = true;
-                    for (let i in newSquares) {
-                        let temp = newSquares[i].split("-");
-                        if (temp[2].length !== 2) {
-                            clear = false;
-                            break;
-                        }
-
-                        if (!$("#" + newSquares[i]).hasClass(shipType) && $("#" + newSquares[i]).hasClass("occupied")) {
-                            clear = false;
-                            break;
-                        }
-                    }
-
-                    if ($(this).attr('id') === curSquare.attr('id')) {
-                        clear = false;
-                    }
-
-                    if (clear) {
-                        for (let i in newSquares) {
-                            $("#" + newSquares[i]).addClass("new");
-                        }
-                    }
-                },
-                function () {
-                    $(newClass).removeClass("new");
-                }
-            );
         }
 
+        let id = curSquare.attr('id');
+        let squareRow = id.slice(-2, -1);
+        let squareColumn = id.slice(-1);
+        let colOrRow;
+        let squareID;
+        if (horizontal) {
+            colOrRow = squareColumn;
+        } else {
+            colOrRow = squareRow;
+        }
+
+        for (let k = parseInt(colOrRow) - parseInt(curLength); k < parseInt(colOrRow) + parseInt(curLength); k++) {
+            if (horizontal) {
+                squareID = squareRow + k;
+            } else {
+                squareID = k + squareColumn;
+            }
+
+            if ($("#l-square-" + squareID).hasClass('occupied ' + shipType)) {
+                oldSquares.push("l-square-" + squareID);
+            }
+        }
+
+        let curSquarePos;
+        for (let i in oldSquares) {
+            if (oldSquares[i] === id) {
+                curSquarePos = i;
+            }
+        }
+
+        $("." + shipType).addClass("old");
+        $(".game-board-square-active").hover(
+            function () {
+                let hoverRow = $(this).attr('id').slice(-2, -1);
+                let hoverColumn = $(this).attr('id').slice(-1);
+                let newRow;
+                let newColumn;
+
+                if (horizontal) {
+                    for (let i in oldSquares) {
+                        let oldColumn = oldSquares[i].slice(-1);
+                        let diff = parseInt(hoverColumn) - parseInt(squareColumn);
+                        newColumn = parseInt(oldColumn) + parseInt(diff);
+                        newSquares[i] = ("l-square-" + hoverRow + newColumn);
+                    }
+                } else {
+                    for (let i in oldSquares) {
+                        let oldRow = oldSquares[i].slice(-2, -1);
+                        let diff = parseInt(hoverRow) - parseInt(squareRow);
+                        newRow = parseInt(oldRow) + parseInt(diff);
+                        newSquares[i] = ("l-square-" + newRow + hoverColumn);
+                    }
+                }
+
+                let clear = true;
+                for (let i in newSquares) {
+                    let temp = newSquares[i].split("-");
+                    if (temp[2].length !== 2) {
+                        clear = false;
+                        break;
+                    }
+
+                    if (!$("#" + newSquares[i]).hasClass(shipType) && $("#" + newSquares[i]).hasClass("drag")) {
+                        clear = false;
+                        break;
+                    }
+                }
+
+                if ($(this).attr('id') === curSquare.attr('id')) {
+                    clear = false;
+                }
+
+                if (clear) {
+                    for (let i in newSquares) {
+                        $("#" + newSquares[i]).addClass("new");
+                    }
+                }
+            },
+            function () {
+                $(".new").removeClass("new");
+            }
+        );
         return false;
     });
 }
