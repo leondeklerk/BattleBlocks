@@ -1,9 +1,9 @@
 for (let i = 0; i < 10; i++) {
-    $("#game-board-left").append("<div class='board-row-active' id='l-row-" + i + "'></div>");
-    $("#game-board-right").append("<div class='board-row-inactive' id='r-row-" + i + "'></div>");
+    $("#game-board-left").append("<div class='board-row' id='l-row-" + i + "'></div>");
+    $("#game-board-right").append("<div class='board-row' id='r-row-" + i + "'></div>");
     for (let j = 0; j < 10; j++) {
-        $("#l-row-" + i).append("<div class='game-board-square-active' id='l-square-" + i + j + "'></div>");
-        $("#r-row-" + i).append("<div class='game-board-square-inactive' id='r-square-" + i + j + "'></div>");
+        $("#l-row-" + i).append("<div class='board-square-active' id='l-square-" + i + j + "'></div>");
+        $("#r-row-" + i).append("<div class='board-square-inactive' id='r-square-" + i + j + "'></div>");
     }
 }
 
@@ -76,17 +76,19 @@ function setupBoard(fleet, side) {
             }
         }
 
-        if(side === "l"){
-            $(".game-board-square-active.occupied").addClass("drag");
+        if (side === "l") {
+            $(".board-square-active.occupied").addClass("drag");
         }
     }
 }
 
 $(document).ready(main());
 
+
 function main() {
-    let playerFleetP1 = new PlayerFleet("first player");
-    let playerFleetP2 = new PlayerFleet("second player");
+    let player = "#game-board-left";
+    let playerFleetP1 = new PlayerFleet("P1");
+    let playerFleetP2 = new PlayerFleet("P2");
     playerFleetP1.initShips();
     playerFleetP2.initShips();
     setupBoard(playerFleetP1, "l");
@@ -94,14 +96,18 @@ function main() {
     let newSquares = [];
     let oldSquares = [];
 
+
     $("#dep").click(function () {
         $(".drag").removeClass("drag");
         $(".board-bottom").hide();
         setupBoard(playerFleetP2, "r");
+        $(document).off('click');
+        $(document).on("click", ".board-square-active", fire);
+        switchBoard();
         return false;
     });
 
-    $(".game-board-square-active").click(function () {
+    $(document).on("click", ".board-square-active", function () {
         if ($(this).hasClass('drag')) {
             let horizontal;
             if ($(this).hasClass('horizontal')) {
@@ -201,7 +207,7 @@ function main() {
                     let selectorOld = $("#" + oldSquaresList[i]);
                     if (newSquaresList[i] !== id) {
                         selectorNew.addClass(selectorOld.attr('class'));
-                        selectorOld.removeClass().addClass("game-board-square-active");
+                        selectorOld.removeClass().addClass("board-square-active");
                     }
                     if (horizontal) {
                         selectorNew.removeClass('horizontal').addClass('vertical');
@@ -216,7 +222,7 @@ function main() {
     });
 
     $(document).mouseup(function () {
-        $(".game-board-square-active").off("mouseenter mouseleave");
+        $(".board-square-active").off("mouseenter mouseleave");
         let reSet = true;
         if ($(".new").length <= 0) {
             reSet = false;
@@ -224,7 +230,7 @@ function main() {
 
         if (reSet) {
             $(".new").addClass($(".old").attr('class')).removeClass("new old");
-            $(".old").removeClass().addClass("game-board-square-active");
+            $(".old").removeClass().addClass("board-square-active");
         } else {
             $(".old").removeClass("old");
         }
@@ -279,7 +285,7 @@ function main() {
         }
 
         $("." + shipType).addClass("old");
-        $(".game-board-square-active").hover(
+        $(".board-square-active").hover(
             function () {
                 let hoverRow = $(this).attr('id').slice(-2, -1);
                 let hoverColumn = $(this).attr('id').slice(-1);
@@ -332,7 +338,62 @@ function main() {
         );
         return false;
     });
+
+    function fire() {
+        if ($(this).hasClass('occupied')) {
+            let shipName = $(this).attr('class').split(/\s+/)[1];
+            $(this).addClass("hit").removeClass("occupied").removeClass(shipName);
+            if ($(player + " ." + shipName).length === 0) {
+                removeList(shipName);
+            }
+            switchBoard();
+        } else if (!$(this).hasClass('hit') && !$(this).hasClass('miss')) {
+            $(this).addClass("miss");
+            switchBoard();
+        }
+
+    }
+
+    function switchBoard() {
+        $(player + " .board-square-active").addClass("board-square-inactive").removeClass("board-square-active");
+        if (player === "#game-board-right") {
+            player = "#game-board-left";
+        } else {
+            player = "#game-board-right";
+        }
+        $(player + " .board-square-inactive").addClass("board-square-active").removeClass("board-square-inactive");
+    }
+
+    function removeList(shipName) {
+        console.log(shipName);
+        if (player === "#game-board-right") {
+            $("#list-" + shipName + "-right .ship-part").addClass("destroyed");
+            for (let i in playerFleetP1.ships) {
+                if (playerFleetP1.ships[i].name === shipName) {
+                    playerFleetP1.ships.splice(i, 1)
+                }
+            }
+        } else if (player === "#game-board-left") {
+            $("#list-" + shipName + "-left .ship-part").addClass("destroyed");
+            for (let i in playerFleetP2.ships) {
+                if (playerFleetP2.ships[i].name === shipName) {
+                    playerFleetP2.ships.splice(i, 1)
+                }
+            }
+        }
+
+        if (playerFleetP1.ships.length === 0) {
+            alert("P1 Wins!");
+            window.location.replace("./splash.html");
+        } else if (playerFleetP2.ships.length === 0) {
+            alert("P2 Wins!");
+            window.location.replace("./splash.html");
+        }
+
+
+    }
 }
+
 
 // var boardContainer = $("#game-board-right");
 // //gameboardRight as 3d Array
