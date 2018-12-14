@@ -10,7 +10,7 @@ var Game = require("./game");
 app.use(express.static(__dirname + "/public"));
 
 app.get("/", function(req, res) {
-    res.sendFile("game.html", {root: "./public"});
+    res.sendFile("splash.html", {root: "./public"});
 });
 
 var server = http.createServer(app).listen(port);
@@ -22,12 +22,21 @@ const wss = new WebSocket.Server({server});
 //game setup
 var connectionID = 0;
 var currentGame = new Game();
+var websockets = {};
 
 wss.on('connection', function connection(ws){
     console.log("made socket connection");
-
     let con = ws;
     con.id = connectionID++;
+    websockets[con.id] = currentGame;
+
+    
+    
+    currentGame.addPlayer(con);
+
+    if(currentGame.hasTwoConnectedPlayers){
+        currentGame = new Game()
+    }
 
     let playerType = currentGame.add
     ws.on('message', function incoming(message) {
