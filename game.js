@@ -10,8 +10,8 @@ game.prototype.transitionStates["0 PLAYERS"] = 0;
 game.prototype.transitionStates["1 PLAYER"] = 1;
 game.prototype.transitionStates["2 PLAYERS"] = 2;
 game.prototype.transitionStates["FIRED"] = 3;
-game.prototype.transitionStates["1"] = 4; //A won
-game.prototype.transitionStates["2"] = 5; //B won
+game.prototype.transitionStates["1"] = 4; //1 won
+game.prototype.transitionStates["2"] = 5; //2 won
 game.prototype.transitionStates["ABORTED"] = 6;
 
 /*

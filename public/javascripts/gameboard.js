@@ -52,11 +52,9 @@ socket.onmessage = function (event) {
 
     if (type === "PLAYER") {
         console.log(msg.player);
-    } //else if (type === "SWITCH") {
-        //turn = !turn;
-        //switchTurns(turn);
-    //}
-    else if (type === "READY") {
+    } else if (type === "SWITCH") {
+        switchTurns();
+    } else if (type === "READY") {
         otherReady = true;
         testListener();
     } else if (type === "FIRED_AT") {
@@ -71,6 +69,14 @@ socket.onmessage = function (event) {
         } else {
             setResult(msg.row, msg.column, false);
         }
+    } else if (type === "SHIP_DESTROYED") {
+        updateShipList(msg.data);
+    } else if (type === "WON") {
+        $(document).off('click');
+        sendShips();
+        alert("You won!");
+    } else if (type === "SHIPS_LOCATIONS") {
+        showShips(msg.data);
     }
 
 };
@@ -81,7 +87,7 @@ socket.onclose = function () {
 
 let otherReady = false;
 let ready = false;
-//let turn = false;
+let turn = true;
 
 function Ship(name) {
     this.name = name;
@@ -164,12 +170,11 @@ function setupBoard(fleet, side) {
 
 $(document).ready(main());
 
-let player = "#game-board-left";
-
 function main() {
-    playerFleetP1 = new PlayerFleet("P1");
-    playerFleetP1.initShips();
-    setupBoard(playerFleetP1, "l");
+    switchTurns();
+    playerFleet = new PlayerFleet("P1");
+    playerFleet.initShips();
+    setupBoard(playerFleet, "l");
     let curSquare;
     let newSquares = [];
     let oldSquares = [];
@@ -226,9 +231,9 @@ function main() {
         let shipType = classList[2];
         let curLength;
 
-        for (let i in playerFleetP1.ships) {
-            if (playerFleetP1.ships[i].name === shipType) {
-                curLength = playerFleetP1.ships[i].length;
+        for (let i in playerFleet.ships) {
+            if (playerFleet.ships[i].name === shipType) {
+                curLength = playerFleet.ships[i].length;
             }
         }
 
@@ -320,12 +325,14 @@ function main() {
 
 function testListener() {
     if (ready && otherReady) {
-        $(document).on("click", ".board-square-active", fire);
+        $(document).on("click", "#game-board-right .board-square-active", fire);
     }
 }
 
 function fire() {
-    if (!$(this).hasClass('hit') && !$(this).hasClass('miss')) {
+
+
+    if (!$(this).hasClass('hit') && !$(this).hasClass('miss') && !$(this).hasClass('inactive')) {
         let id = $(this).attr('id');
         let row = id.slice(-2, -1);
         let column = id.slice(-1);
@@ -337,15 +344,15 @@ function fire() {
 
         socket.send(JSON.stringify(outgoingMessage));
     }
+
 }
 
 function processFired(row, column) {
-    console.log("proccessing fire");
     let curSquare = "#game-board-left " + "#" + row + column;
-    console.log($(curSquare).attr('class'));
     let message;
     if ($(curSquare).hasClass('occupied')) {
-        let shipName = $(curSquare).attr('class').split(/\s+/)[1];
+        let shipName = $(curSquare).attr('class').split(/\s+/)[2];
+        console.log(shipName);
         $(curSquare).addClass("hit").removeClass("occupied").removeClass(shipName);
         message = {
             type: "FIRED_RESULT",
@@ -354,12 +361,12 @@ function processFired(row, column) {
             column: column
         };
         console.log("HIT! :(");
-        // if ($("#game-board-left" + " ." + shipName).length === 0) {
-        //     removeList(shipName);
-        // }
+        if ($("#game-board-left " + "." + shipName).length === 0) {
+            console.log(shipName);
+            removeList(shipName);
+        }
     } else if (!$(curSquare).hasClass('hit') && !$(curSquare).hasClass('miss')) {
         $(curSquare).addClass("miss");
-        //switchBoard();
         message = {
             type: "FIRED_RESULT",
             data: "MISS",
@@ -378,46 +385,78 @@ function setResult(row, column, hit) {
     } else {
         $(curSquare).addClass('miss');
     }
-    turn = !turn;
+
+    switchTurns();
     let message = {
         type: "SWITCH"
+    };
+    socket.send(JSON.stringify(message));
+}
+
+function updateShipList(ship) {
+    $("#list-" + ship + "-right .ship-part").addClass("destroyed");
+}
+
+function switchTurns() {
+    if (turn) {
+        $("#game-board-right .board-square-active").removeClass("inactive");
+    } else {
+        $("#game-board-right .board-square-active").addClass("inactive");
     }
-    //socket.send(JSON.stringify(message));
+    turn = !turn;
+}
+
+function removeList(shipName) {
+    $("#list-" + shipName + "-left .ship-part").addClass("destroyed");
+    for (let i in playerFleet.ships) {
+        if (playerFleet.ships[i].name === shipName) {
+            playerFleet.ships.splice(i, 1);
+            let message = {
+                type: "SHIP_DESTROYED",
+                data: shipName
+            };
+            socket.send(JSON.stringify(message));
+        }
+    }
+
+    if (playerFleet.ships.length === 0) {
+        let message = {
+            type: "WON",
+        };
+        socket.send(JSON.stringify(message));
+        $(document).off('click');
+        alert("You lost!");
+    }
+}
+
+function sendShips() {
+    let shipsList = [];
+    $(".occupied").each(function () {
+        shipsList.push($(this).attr('id'));
+    });
+
+    let message = {
+        type: "SHIPS_LOCATIONS",
+        data: shipsList
+    };
+
+    socket.send(JSON.stringify(message));
 }
 
 
-// function switchTurns() {
-//     if(turn){
-//         $("#game-board-right .board-square-active").removeClass("inactive");
-//     } else {
-//         $("#game-board-right .board-square-active").addClass("inactive");
-//     }
-// }
-
-function removeList(shipName) {
-    if (player === "#game-board-right") {
-        $("#list-" + shipName + "-right .ship-part").addClass("destroyed");
-        for (let i in playerFleetP1.ships) {
-            if (playerFleetP1.ships[i].name === shipName) {
-                playerFleetP1.ships.splice(i, 1)
-            }
-        }
-    } else if (player === "#game-board-left") {
-        $("#list-" + shipName + "-left .ship-part").addClass("destroyed");
-        for (let i in playerFleetP2.ships) {
-            if (playerFleetP2.ships[i].name === shipName) {
-                playerFleetP2.ships.splice(i, 1)
-            }
-        }
+function showShips(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        $("#game-board-right #" + arr[i]).addClass('occupied');
     }
 
-    if (playerFleetP1.ships.length === 0) {
-        alert("P1 Wins!");
-        window.location.replace("./splash.html");
-    } else if (playerFleetP2.ships.length === 0) {
-        alert("P2 Wins!");
-        window.location.replace("./splash.html");
-    }
+    let selector = "#game-board-right .board-square-active";
+    $(selector).each(function () {
+        if(!$(this).hasClass('occupied') && !$(this).hasClass('hit')){
+            $(this).addClass('miss');
+        }
+    });
+
+
 }
 
 function rotate(object) {
@@ -483,7 +522,6 @@ function rotate(object) {
         }
     }
 
-
     for (let i = 0; i < clickedPos; i++) {
         let firstPart = oldSquaresList[i].slice(0, -2);
         if (horizontal) {
@@ -506,7 +544,6 @@ function rotate(object) {
 
     let clear = true;
     for (let i  in newSquaresList) {
-        let temp = newSquaresList[i].split("-");
         if ((newSquaresList[i] !== id && $("#" + newSquaresList[i]).hasClass('drag')) || newSquaresList[i].length !== 2) {
             clear = false;
             break;
@@ -530,103 +567,4 @@ function rotate(object) {
         }
     }
 }
-
-
-// var boardContainer = $("#game-board-right");
-// //gameboardRight as 3d Array
-// var gameBoardRight = [
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [1,0,0,0,0,0,0,0,0,0],
-//                     [1,0,1,0,0,0,0,0,0,0],
-//                     [1,0,1,0,1,0,1,0,0,0],
-//                     [1,0,1,0,1,0,1,0,1,0],
-//                     [1,0,1,0,1,0,1,0,1,0],
-//                     ]
-//
-// var gameBoardLeft = [
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [0,0,0,0,0,0,0,0,0,0],
-//                     [1,0,0,0,0,0,0,0,0,0],
-//                     [1,0,1,0,0,0,0,0,0,0],
-//                     [1,0,1,0,1,0,1,0,0,0],
-//                     [1,0,1,0,1,0,1,0,1,0],
-//                     [1,0,1,0,1,0,1,0,1,0],
-//                     ]
-//
-// boardContainer.click(fire);
-//
-// showShips();
-// function showShips(){
-//     for (let i = 0; i < 10;i++){
-//         for (let j = 0; j < 10; j++){
-//             if (gameBoardLeft[i][j] == 1){
-//                 $("#l-square-" + i + j).css({"background-color":"black"});
-//             }
-//         }
-//     }
-// }
-//
-// function fire(e){
-//     //e.target (div clicked on)
-//     //e.currentTarget parent element of e.target. The element on which the event listener is set on (boardContainer)
-//     if (e.target !== e.currentTarget){
-//         var row = e.target.id.substring(e.target.id.length-2,e.target.id.length-1);
-//         var col = e.target.id.substring(e.target.id.length-1,e.target.id.length);
-//
-//         console.log("row: " + row + " col: " + col);
-//     }
-//     // miss
-//     if (gameBoardRight[row][col] == 0) {
-//         e.target.style.background = 'blue'
-//         gameBoardRight[row][col] = 3;
-//
-//     // hit
-//     }else if(gameBoardRight[row][col] == 1) {
-//         e.target.style.background = 'red';
-//         gameBoardRight[row][col] = 2;
-//
-//     // prevent player from firing on fired block
-//     }else if(gameBoardRight[row][col] > 1){
-//         alert("Already fired");
-//     }
-//     e.stopPropagation();
-//
-//
-//     //Switch active/inactive boards
-//     //Player 2 fires
-// }
-//
-// //not priority
-// //Random gameboards?
-// function rotate(e){
-//     if (e.target !== e.currentTarget){
-//         var row = e.target.id.substring(e.target.id.length-2,e.target.id.length-1);
-//         var col = e.target.id.substring(e.target.id.length-1,e.target.id.length);
-//
-//         console.log("row: " + row + " col: " + col);
-//     }
-//     // miss
-//     if (gameBoardRight[row][col] == 0) {
-//
-//
-//     // hit
-//     }else if(gameBoardRight[row][col] == 1) {
-//         e.target.style.background = 'red';
-//         gameBoardRight[row][col] = 2;
-//         alert("HITTTT");
-//
-//     // prevent player from firing on fired block
-//     }else if(gameBoardRight[row][col] > 1){
-//         alert("Already fired");
-//     }
-//     e.stopPropagation();
-//
-// }
 

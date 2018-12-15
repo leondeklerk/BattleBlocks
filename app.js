@@ -7,7 +7,7 @@ var routes = require("./routes/index");
 var port = process.argv[2];
 var app = express();
 
-var gameStatus = require("./statTracker");
+var stats= require("./statTracker");
 var Game = require("./game");
 
 app.use(express.static(__dirname + "/public"));
@@ -33,7 +33,7 @@ setInterval(function() {
 
 //game setup
 var connectionID = 0;
-var currentGame = new Game(gameStatus.gamesInitialized++);
+var currentGame = new Game(stats.gamesInitialized++);
 
 wss.on('connection', function connection(ws) {
 
@@ -50,17 +50,17 @@ wss.on('connection', function connection(ws) {
             player: "1"
         };
         con.send(JSON.stringify(message));
-        //con.send(JSON.stringify({type: "SWITCH"}));
     } else if(playerType === "2"){
         let message = {
             type: "PLAYER",
             player: "2"
         };
         con.send(JSON.stringify(message));
+        con.send(JSON.stringify({type: "SWITCH"}));
     }
 
     if (currentGame.hasTwoConnectedPlayers()) {
-        currentGame = new Game(gameStatus.gamesInitialized++);
+        currentGame = new Game(stats.gamesInitialized++);
     }
 
 
@@ -70,15 +70,44 @@ wss.on('connection', function connection(ws) {
         console.log("received message " + oMsg.type);
         let gameObj = websockets[con.id];
 
+        if(oMsg.type === "FIRED_AT"){
+            gameObj.setStatus("FIRED");
+        } else if(oMsg.type === "WON"){
+            gameObj.setStatus(con.id);
+            stats.gamesCompleted++;
+        }
+
 
         let isPlayer1 = (gameObj.player1 === con);
 
         if (isPlayer1) {
-            console.log("send to P1");
-            gameObj.player2.send(message);
-        } else {
             console.log("send to P2");
-            gameObj.player1.send(message);
+            if(gameObj.player2 !== null){
+                gameObj.player2.send(message);
+            }
+
+            if(oMsg.type === "FIRED_AT"){
+                gameObj.setStatus("FIRED");
+                console.log("1 FIRED");
+            } else if(oMsg.type === "WON"){
+                gameObj.setStatus("2");
+                stats.gamesCompleted++;
+                console.log("2 WON");
+            }
+        } else {
+            console.log("send to P1");
+            if(gameObj.player1 !== null){
+                gameObj.player1.send(message);
+            }
+
+            if(oMsg.type === "FIRED_AT"){
+                gameObj.setStatus("FIRED");
+                console.log("2 FIRED");
+            } else if(oMsg.type === "WON"){
+                gameObj.setStatus("1");
+                stats.gamesCompleted++;
+                console.log("1 WON");
+            }
         }
 
 

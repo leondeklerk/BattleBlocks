@@ -257,12 +257,15 @@ td {
 
 .new {
     background: lightgreen;
+    border: 0.01em solid lightgreen;
 }
 
 .hit, .destroyed {
     background: red;
+    border: 0.01em solid red;
 }
 
 .miss {
     background: dodgerblue;
+    border: 0.01em solid dodgerblue;
 }
