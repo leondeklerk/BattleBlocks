@@ -203,7 +203,9 @@ input:focus {
 }
 
 td {
-    background: #3f3f3f;
+
+    background: rgba(42, 42, 42, 0.6);
+    border: 0.01em solid rgb(42, 42, 42);
     width: 0.5em;
     height: 0.5em;
 }
@@ -226,29 +228,25 @@ td {
     border: 0.01em solid #ababab;
 }
 
-.board-row, .board-row {
+.board-row {
     line-height: 0;
 }
 
-.board-square-inactive {
-    opacity: 0.2;
-}
-
-.board-square-active, .board-square-inactive {
+.board-square {
     width: 2em;
     height: 2em;
     display: inline-block;
     border: 0.01em solid #ababab;
 }
 
-/*.board-square-active:hover {*/
+/*.board-square:hover {*/
 /*background: #3f3f3f;*/
 /*border: 0.01em solid #3f3f3f;*/
 /*}*/
 
 .occupied {
-    background: rgba(42, 42, 42, 0.75);
-    border: 0.01em solid rgba(42, 42, 42, 0.6);
+    background: rgba(42, 42, 42, 0.6);
+    border: 0.01em solid rgb(42, 42, 42);
 }
 
 .old, .inactive {
@@ -256,16 +254,18 @@ td {
 }
 
 .new {
-    background: lightgreen;
+    /*background: lightgreen;*/
     border: 0.01em solid lightgreen;
+    background: rgba(144, 238, 144, 0.3);
 }
 
-.hit, .destroyed {
-    background: red;
+.hit, .destroyed, .error {
+    background: rgba(255, 0, 0, 0.3);
     border: 0.01em solid red;
 }
 
 .miss {
-    background: dodgerblue;
+    background: rgba(30, 144, 255, 0.3);
+    /*background: dodgerblue;*/
     border: 0.01em solid dodgerblue;
 }

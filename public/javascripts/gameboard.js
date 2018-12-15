@@ -122,7 +122,6 @@ function setupBoard(fleet, side) {
         let maxStartPos = 9 - curShipLength;
         let startPos = getRandomInt(maxStartPos);
         let randomInt = getRandomInt(9);
-        // let pref = "#" + side + "-square-";
 
         let controlNum = 1;
         while (controlNum > 0) {
@@ -132,10 +131,6 @@ function setupBoard(fleet, side) {
                     if ($("#game-board-left " + "#" + randomInt + j).hasClass('occupied')) {
                         clear = false
                     }
-                    //
-                    // if ($(pref + randomInt + j).hasClass('occupied')) {
-                    //     clear = false
-                    // }
                 }
             } else {
                 for (let j = startPos; j < startPos + curShipLength; j++) {
@@ -163,7 +158,7 @@ function setupBoard(fleet, side) {
         }
 
         if (side === "l") {
-            $(".board-square-active.occupied").addClass("drag");
+            $(".board-square.occupied").addClass("drag");
         }
     }
 }
@@ -190,12 +185,11 @@ function main() {
         };
         socket.send(JSON.stringify(message));
         testListener();
-        // switchBoard();
         return false;
     });
 
     //Rotation
-    $(document).on("click", ".board-square-active", function () {
+    $(document).on("click", ".board-square", function () {
         if ($(this).hasClass('drag')) {
             rotate(this);
         }
@@ -204,7 +198,8 @@ function main() {
 
     //confirm drag
     $(document).mouseup(function () {
-        $(".board-square-active").off("mouseenter mouseleave");
+        $(".error").removeClass('error');
+        $(".board-square").off("mouseenter mouseleave");
         let reSet = true;
         if ($(".new").length <= 0) {
             reSet = false;
@@ -212,7 +207,7 @@ function main() {
 
         if (reSet) {
             $(".new").addClass($(".old").attr('class')).removeClass("new old");
-            $(".old").removeClass().addClass("board-square-active");
+            $(".old").removeClass().addClass("board-square");
         } else {
             $(".old").removeClass("old");
         }
@@ -268,7 +263,7 @@ function main() {
         }
 
         $("." + shipType).addClass("old");
-        $(".board-square-active").hover(
+        $(".board-square").hover(
             function () {
                 let hoverRow = $(this).attr('id').slice(-2, -1);
                 let hoverColumn = $(this).attr('id').slice(-1);
@@ -293,7 +288,6 @@ function main() {
 
                 let clear = true;
                 for (let i in newSquares) {
-                    // let temp = newSquares[i].split("-");
                     if (newSquares[i].length !== 2) {
                         clear = false;
                         break;
@@ -301,6 +295,9 @@ function main() {
 
                     if (!$("#" + newSquares[i]).hasClass(shipType) && $("#" + newSquares[i]).hasClass("drag")) {
                         clear = false;
+                        for (let i in newSquares) {
+                            $("#" + newSquares[i]).addClass("error");
+                        }
                         break;
                     }
                 }
@@ -314,9 +311,11 @@ function main() {
                         $("#" + newSquares[i]).addClass("new");
                     }
                 }
+
             },
             function () {
                 $(".new").removeClass("new");
+                $(".error").removeClass('error');
             }
         );
         return false;
@@ -325,7 +324,7 @@ function main() {
 
 function testListener() {
     if (ready && otherReady) {
-        $(document).on("click", "#game-board-right .board-square-active", fire);
+        $(document).on("click", "#game-board-right .board-square", fire);
     }
 }
 
@@ -399,9 +398,9 @@ function updateShipList(ship) {
 
 function switchTurns() {
     if (turn) {
-        $("#game-board-right .board-square-active").removeClass("inactive");
+        $("#game-board-right .board-square").removeClass("inactive");
     } else {
-        $("#game-board-right .board-square-active").addClass("inactive");
+        $("#game-board-right .board-square").addClass("inactive");
     }
     turn = !turn;
 }
@@ -449,9 +448,9 @@ function showShips(arr) {
         $("#game-board-right #" + arr[i]).addClass('occupied');
     }
 
-    let selector = "#game-board-right .board-square-active";
+    let selector = "#game-board-right .board-square";
     $(selector).each(function () {
-        if(!$(this).hasClass('occupied') && !$(this).hasClass('hit')){
+        if (!$(this).hasClass('occupied') && !$(this).hasClass('hit')) {
             $(this).addClass('miss');
         }
     });
@@ -546,6 +545,9 @@ function rotate(object) {
     for (let i  in newSquaresList) {
         if ((newSquaresList[i] !== id && $("#" + newSquaresList[i]).hasClass('drag')) || newSquaresList[i].length !== 2) {
             clear = false;
+            for (let i in newSquaresList) {
+                $("#" + newSquaresList[i]).addClass("error");
+            }
             break;
         }
     }
@@ -556,7 +558,7 @@ function rotate(object) {
             let selectorOld = $("#" + oldSquaresList[i]);
             if (newSquaresList[i] !== id) {
                 selectorNew.addClass(selectorOld.attr('class'));
-                selectorOld.removeClass().addClass("board-square-active");
+                selectorOld.removeClass().addClass("board-square");
             }
             if (horizontal) {
                 selectorNew.removeClass('horizontal').addClass('vertical');
@@ -565,6 +567,10 @@ function rotate(object) {
             }
 
         }
+    } else {
+        setTimeout(function(){
+            $(".error").removeClass('error');
+        },200);
     }
 }
 
