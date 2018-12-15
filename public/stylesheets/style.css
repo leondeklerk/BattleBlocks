@@ -251,7 +251,7 @@ td {
     border: 0.01em solid rgba(42, 42, 42, 0.6);
 }
 
-.old {
+.old, .inactive {
     opacity: 0.5;
 }
 

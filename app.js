@@ -2,51 +2,158 @@ var express = require('express');
 var http = require("http");
 var WebSocket = require('ws');
 
+var routes = require("./routes/index");
+
 var port = process.argv[2];
 var app = express();
 
+var gameStatus = require("./statTracker");
 var Game = require("./game");
 
 app.use(express.static(__dirname + "/public"));
-
-app.get("/", function(req, res) {
-    res.sendFile("splash.html", {root: "./public"});
-});
+app.get("/join", routes);
+app.get("/*", routes);
 
 var server = http.createServer(app).listen(port);
-//Static files
-
-//socket setup
 const wss = new WebSocket.Server({server});
+var websockets = {};
+
+setInterval(function() {
+    for(let i in websockets){
+        if(websockets.hasOwnProperty(i)){
+            let gameObj = websockets[i];
+            //if the gameObj has a final status, the game is complete/aborted
+            if(gameObj.finalStatus!=null){
+                console.log("\tDeleting element "+i);
+                delete websockets[i];
+            }
+        }
+    }
+}, 50000);
 
 //game setup
 var connectionID = 0;
-var currentGame = new Game();
-var websockets = {};
+var currentGame = new Game(gameStatus.gamesInitialized++);
 
-wss.on('connection', function connection(ws){
-    console.log("made socket connection");
+wss.on('connection', function connection(ws) {
+
     let con = ws;
     con.id = connectionID++;
+    let playerType = currentGame.addPlayer(con);
     websockets[con.id] = currentGame;
 
-    
-    
-    currentGame.addPlayer(con);
+    console.log("Player %s placed in game %s as %s", con.id, currentGame.id, playerType);
 
-    if(currentGame.hasTwoConnectedPlayers){
-        currentGame = new Game()
+    if(playerType === "1"){
+        let message = {
+            type: "PLAYER",
+            player: "1"
+        };
+        con.send(JSON.stringify(message));
+        //con.send(JSON.stringify({type: "SWITCH"}));
+    } else if(playerType === "2"){
+        let message = {
+            type: "PLAYER",
+            player: "2"
+        };
+        con.send(JSON.stringify(message));
     }
 
-    let playerType = currentGame.add
-    ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
-      });
-    
-      ws.send('something');
+    if (currentGame.hasTwoConnectedPlayers()) {
+        currentGame = new Game(gameStatus.gamesInitialized++);
+    }
+
+
+    con.on("message", function incoming(message) {
+
+        let oMsg = JSON.parse(message);
+        console.log("received message " + oMsg.type);
+        let gameObj = websockets[con.id];
+
+
+        let isPlayer1 = (gameObj.player1 === con);
+
+        if (isPlayer1) {
+            console.log("send to P1");
+            gameObj.player2.send(message);
+        } else {
+            console.log("send to P2");
+            gameObj.player1.send(message);
+        }
+
+
+        // let isPlayer1 = (gameObj.player1 === con);
+
+
+
+        // if (isPlayer1) {
+        //     if (oMsg.type === messages.T_TARGET_WORD) {
+        //         gameObj.setWord(oMsg.data);
+        //
+        //         if(gameObj.hasTwoConnectedPlayers()){
+        //             gameObj.playerB.send(message);
+        //         }
+        //     }
+        // }
+        // else {
+        //     /*
+        //      * player B can make a guess;
+        //      * this guess is forwarded to A
+        //      */
+        //     if(oMsg.type == messages.T_MAKE_A_GUESS){
+        //         gameObj.playerA.send(message);
+        //         gameObj.setStatus("CHAR GUESSED");
+        //     }
+        //
+        //     /*
+        //      * player B can state who won/lost
+        //      */
+        //     if( oMsg.type == messages.T_GAME_WON_BY){
+        //         gameObj.setStatus(oMsg.data);
+        //         //game was won by somebody, update statistics
+        //         gameStatus.gamesCompleted++;
+        //     }
+        // }
+    });
+
+    con.on("close", function (code) {
+
+        /*
+         * code 1001 means almost always closing initiated by the client;
+         * source: https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
+         */
+        console.log(con.id + " disconnected ...");
+
+        if (code == "1001") {
+            /*
+            * if possible, abort the game; if not, the game is already completed
+            */
+            let gameObj = websockets[con.id];
+
+            if (gameObj.isValidTransition(gameObj.gameState, "ABORTED")) {
+                gameObj.setStatus("ABORTED");
+
+                /*
+                 * determine whose connection remains open;
+                 * close it
+                 */
+                try {
+                    gameObj.player1.close();
+                    gameObj.player1 = null;
+                }
+                catch(e){
+                    console.log("Player 1 closing: "+ e);
+                }
+
+                try {
+                    gameObj.player2.close();
+                    gameObj.player2 = null;
+                }
+                catch(e){
+                    console.log("Player 2 closing: " + e);
+                }
+            }
+
+        }
+    });
 });
-
-
-// server.listen(port, function(){
-//     console.log("listening on port 3001");
-// });

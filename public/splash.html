@@ -23,27 +23,31 @@
         <div id="default-splash" class="card">
             <div class="button-container">
                 <div id="main-buttons">
-                    <button id="play" onclick="setPlayDiv()">PLAY</button>
+                    <form action="/join" method="get">
+                        <button id="play" type="submit">PLAY</button> <!--onclick="setPlayDiv()"-->
+                    </form>
                     <button id="rules" onclick="gotToRules()">RULES</button>
                 </div>
-                <div id="play-buttons">
-                    <button id="join-random" onclick="location.href='game.html'">JOIN RANDOM</button>
-                    <button id="join-friend" onclick="joinFriend()">JOIN FRIEND</button>
-                    <button id="host-game">HOST GAME</button>
-                    <button id="cancel" onclick="setButtonDiv()">CANCEL</button>
-                </div>
-                <div id="join-friend-div">
-                    <h3 id="join-message">Enter your friends code</h3>
-                    <form method="post" action="" novalidate>
-                        <div id="input">
-                            <label for="friend-code">#</label>
-                            <input id="friend-code" name="friend-code" type="text" placeholder="00000" maxlength="5"
-                                   minlength="5">
-                        </div>
-                        <button class="friend-buttons" type="submit">JOIN</button>
-                    </form>
-                    <button class="friend-buttons" onclick="setPlayDiv()">CANCEL</button>
-                </div>
+                <!--<div id="play-buttons">-->
+                    <!--<form action="/join" method="get">-->
+                        <!--<button id="join-random" type="submit">JOIN RANDOM</button>-->
+                    <!--</form>-->
+                    <!--<button id="join-friend" onclick="joinFriend()">JOIN FRIEND</button>-->
+                    <!--<button id="host-game">HOST GAME</button>-->
+                    <!--<button id="cancel" onclick="setButtonDiv()">CANCEL</button>-->
+                <!--</div>-->
+                <!--<div id="join-friend-div">-->
+                    <!--<h3 id="join-message">Enter your friends code</h3>-->
+                    <!--<form method="post" action="" novalidate>-->
+                        <!--<div id="input">-->
+                            <!--<label for="friend-code">#</label>-->
+                            <!--<input id="friend-code" name="friend-code" type="text" placeholder="00000" maxlength="5"-->
+                                   <!--minlength="5">-->
+                        <!--</div>-->
+                        <!--<button class="friend-buttons" type="submit">JOIN</button>-->
+                    <!--</form>-->
+                    <!--<button class="friend-buttons" onclick="setPlayDiv()">CANCEL</button>-->
+                <!--</div>-->
             </div>
             <div id="image-div">
                 <img src="https://via.placeholder.com/250" alt="https://via.placeholder.com/250">
