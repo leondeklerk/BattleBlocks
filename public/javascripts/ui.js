@@ -6,3 +6,30 @@ for (let i = 0; i < 10; i++) {
         $("#game-board-right #" + i).append("<div class='board-square' id='" + i + j + "'></div>");
     }
 }
+
+$("#return-to-splash").hide();
+
+function gotToRules(){
+    $("#rules-div").show();
+    $("#default-splash").hide();
+}
+function returnToDef() {
+    $("#rules-div").hide();
+    $("#default-splash").show();
+}
+
+// function setPlayDiv() {
+//     $("#join-friend-div").hide();
+//     $("#main-buttons").hide();
+//     $("#play-buttons").show();
+// }
+//
+// function setButtonDiv() {
+//     $("#main-buttons").show();
+//     $("#play-buttons").hide();
+// }
+
+// function joinFriend() {
+//     $("#play-buttons").hide();
+//     $("#join-friend-div").show();
+// }

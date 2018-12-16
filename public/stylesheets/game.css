@@ -1,0 +1,159 @@
+@import "style.css";
+.game-board {
+    height: 100%;
+    width: 49.5%;
+}
+
+.board-title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.board-title p {
+    text-align: center;
+    border-bottom: solid 1px #ababab;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+    width: 75%;
+}
+
+.board-bottom-button p #return-to-splash p {
+    font-size: 1.1em;
+}
+
+.board-bottom-button, #return-to-splash {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+#left-board {
+    float: left;
+    border-right: solid 1px #ababab;
+}
+
+#right-board {
+    float: right;
+    border-left: solid 1px #ababab;
+}
+
+#game-card {
+    width: 70em;
+    height: 35em;
+}
+
+.list-row-empty {
+    height: 0.4em;
+}
+
+td {
+    background: rgba(42, 42, 42, 0.6);
+    border: 0.01em solid rgb(42, 42, 42);
+    width: 0.5em;
+    height: 0.5em;
+}
+
+#ships-list-left {
+    float: left;
+    margin: 3em 0 0 3em;
+}
+
+#ships-list-right {
+    float: right;
+    margin: 3em 3em 0 0;
+}
+
+#game-board-left, #game-board-right {
+    width: fit-content;
+    display: inline-block;
+    margin-top: 3em;
+    border: 0.01em solid #ababab;
+}
+
+.board-row {
+    line-height: 0;
+}
+
+.board-square {
+    width: 2em;
+    height: 2em;
+    display: inline-block;
+    border: 0.01em solid #ababab;
+}
+
+#game-board-right .board-square:hover:not(.inactive) {
+    transition: all 0.1s;
+    background: rgba(42, 42, 42, 0.3);
+    cursor: crosshair;
+}
+
+.occupied {
+    background: rgba(42, 42, 42, 0.6);
+    border: 0.01em solid rgb(42, 42, 42);
+}
+
+.old, .inactive {
+    opacity: 0.5;
+}
+
+.new {
+    border: 0.01em solid lightgreen;
+    background: rgba(144, 238, 144, 0.3);
+}
+
+.hit, .destroyed, .error {
+    background: rgba(255, 0, 0, 0.3);
+    border: 0.01em solid red;
+}
+
+.miss {
+    background: rgba(30, 144, 255, 0.3);
+    border: 0.01em solid dodgerblue;
+}
+
+/* console */
+#log {
+    border: solid 1px #ababab;
+    height: 5em;
+    margin: 2em 3em;
+    text-align: left;
+    overflow-y: auto;
+}
+
+.console-item {
+    font-size: 0.8em;
+    margin-left: 0.5em;
+    color: black;
+    font-family: Roboto, serif;
+    font-weight: 600;
+    animation: incoming 2s steps(60, end);
+    width: 40em;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: font-size 0.5s;
+}
+
+#log::-webkit-scrollbar
+{
+    display: none;
+}
+
+.console-item:active {
+    font-size: 0.9em;
+}
+.console-item::before {
+    content: " > ";
+}
+
+.console-item::after {
+    content: " <";
+}
+
+@keyframes incoming{
+    0%{width: 0;}
+    50%{width: 50%;}
+    100%{ width: 100%; }
+}

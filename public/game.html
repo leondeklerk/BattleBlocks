@@ -1,11 +1,11 @@
+<!--Outdated go to splash.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>BattleBlocks</title>
-    <link type="text/css" rel="stylesheet" href="stylesheets/style.css">
+    <link type="text/css" rel="stylesheet" href="stylesheets/game.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type='text/javascript' src='javascripts/script.js'></script>
     <link href="https://fonts.googleapis.com/css?family=Raleway:200|Roboto:100" rel="stylesheet">
 </head>
 <body>
@@ -13,12 +13,6 @@
     <h1>BattleBlocks</h1>
 </header>
 <main>
-    <div id="statistics">
-        <h1>STATISTICS</h1>
-        <p id="first-stat">Stat 1</p>
-        <p id="second-stat">Stat 2</p>
-        <p id="third-stat">Stat 3</p>
-    </div>
     <div id="container">
         <div id='game-card' class="card">
             <div id="left-board" class="game-board">
@@ -63,9 +57,15 @@
                 </div>
                 <div id="game-board-left" class="board">
                 </div>
-                <div class="board-bottom">
+                <div class="board-bottom-button">
                     <p>Deploy your ships</p>
                     <button id="dep">READY</button>
+                </div>
+                <div id="return-to-splash">
+                    <form action="/quit" method="get">
+                        <p>Return to the splash screen</p>
+                        <button type="submit">QUIT</button>
+                    </form>
                 </div>
             </div>
             <div id="right-board" class="game-board">
@@ -109,6 +109,8 @@
                     </table>
                 </div>
                 <div id="game-board-right" class="board">
+                </div>
+                <div id="log">
                 </div>
             </div>
             <script type="text/javascript" src="javascripts/ui.js"></script>
