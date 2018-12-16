@@ -43,7 +43,10 @@
 let socket = new WebSocket("ws://localhost:8080");
 
 socket.onopen = function () {
-
+    let message = {
+        type: "CONNECTED"
+    };
+    socket.send(JSON.stringify(message));
 };
 
 socket.onmessage = function (event) {
@@ -51,43 +54,82 @@ socket.onmessage = function (event) {
     let type = msg.type;
 
     if (type === "PLAYER") {
-        console.log(msg.player);
+        output.log("You are player " + msg.player);
+        if(msg.player === "2"){
+            output.log("Other player is already connected");
+        } else {
+            output.log("Waiting for another player...");
+        }
+    } else if (type === "CONNECTED"){
+        output.log("The other player connected");
     } else if (type === "SWITCH") {
         switchTurns();
     } else if (type === "READY") {
+        output.log("The other player is ready");
         otherReady = true;
         testListener();
     } else if (type === "FIRED_AT") {
-        console.log("Incomming fire");
+        if(!otherReady){
+            otherReady = true;
+            testListener();
+        }
+
         let column = msg.column;
         let row = msg.row;
-        console.log(row + "-" + column);
+        output.log("Incoming fire! Enemy fired at " + String.fromCharCode(65 + parseInt(row)) + (parseInt(column) + 1));
         processFired(row, column);
     } else if (type === "FIRED_RESULT") {
         if (msg.data === "HIT") {
             setResult(msg.row, msg.column, true);
+            output.log("You hit!");
         } else {
             setResult(msg.row, msg.column, false);
+            output.log("You missed!");
         }
     } else if (type === "SHIP_DESTROYED") {
+        output.log("You destroyed the enemy " + msg.data);
         updateShipList(msg.data);
     } else if (type === "WON") {
+        $("#return-to-splash").show();
         $(document).off('click');
         sendShips();
-        alert("You won!");
+        output.log("You won!");
+        disconnect();
     } else if (type === "SHIPS_LOCATIONS") {
         showShips(msg.data);
+        output.log("Showing the enemy ships");
     }
 
 };
 
 socket.onclose = function () {
-    alert("Other player has disconnected");
+    disconnect();
 };
+
+function disconnect(){
+    output.log("Other player has disconnected");
+    output.log("you will automatically be disconnected in 30 seconds...");
+    $(".board-bottom-button").hide();
+    $("#return-to-splash").show();
+    setTimeout(function () {
+        $("#return-to-splash button").trigger("click");
+    }, 30000);
+}
 
 let otherReady = false;
 let ready = false;
 let turn = true;
+var output = {
+    log: function (message) {
+        $("#log").append("<p class='console-item'>" + message + "</p>");
+        updateScroll();
+    }
+};
+
+function updateScroll(){
+    var element = document.getElementById("log");
+    element.scrollTop = element.scrollHeight;
+}
 
 function Ship(name) {
     this.name = name;
@@ -177,12 +219,18 @@ function main() {
     //end setup
     $("#dep").click(function () {
         $(".drag").removeClass("drag");
-        $(".board-bottom").hide();
+        $(".board-bottom-button").hide();
         $(document).off('click');
         ready = true;
         let message = {
             type: "READY"
         };
+        // if(otherReady){
+        //     output.log("You and the other player are ready, the game will start now");
+        // } else {
+        //     output.log("Still waiting on the other player to be ready");
+        // }
+
         socket.send(JSON.stringify(message));
         testListener();
         return false;
@@ -324,6 +372,7 @@ function main() {
 
 function testListener() {
     if (ready && otherReady) {
+        output.log("You are both ready and the game will start");
         $(document).on("click", "#game-board-right .board-square", fire);
     }
 }
@@ -410,6 +459,7 @@ function removeList(shipName) {
     for (let i in playerFleet.ships) {
         if (playerFleet.ships[i].name === shipName) {
             playerFleet.ships.splice(i, 1);
+            output.log("Your " + shipName + " got destroyed");
             let message = {
                 type: "SHIP_DESTROYED",
                 data: shipName
@@ -424,7 +474,8 @@ function removeList(shipName) {
         };
         socket.send(JSON.stringify(message));
         $(document).off('click');
-        alert("You lost!");
+        output.log("You lost!");
+        disconnect();
     }
 }
 

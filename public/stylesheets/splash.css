@@ -1,0 +1,134 @@
+@import "style.css";
+#statistics p:active {
+    font-size: 1em;
+    transition: all 0.5s;
+}
+
+#statistics {
+    display: inline-block;
+    text-align: left;
+    width: 10em;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+#statistics h1 {
+    text-align: center;
+    border-bottom: solid 1px #ababab;
+    font-size: 1em;
+    margin: 0;
+    padding: 0.5em;
+}
+
+#statistics p {
+    font-weight: 600;
+    font-size: 0.8em;
+    transition: all 0.5s;
+}
+
+#statistics p:hover {
+    cursor: pointer;
+}
+
+#fourth::after {
+    content: ")";
+}
+
+#fourth::before {
+    content: "(";
+}
+
+#goal-text/*, #join-message*/ {
+    font-family: Raleway, serif;
+    text-align: center;
+    border-bottom: solid 0.1em #ababab;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+}
+
+#join-message {
+    width: 50%;
+    margin: auto auto 2em auto;
+    font-size: 1em;
+    color: rgba(0, 0, 0, 0.9);;
+}
+
+.button-container {
+    float: right;
+    width: 49.5%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#image-div {
+    float: left;
+    width: 49.5%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#controls-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#controls-div p {
+    font-size: 0.9em;
+}
+
+.control-img {
+    margin: 1em 3em 0 3em;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+/*#play-buttons button,*/ #main-buttons button {
+    display: block;
+}
+
+
+
+/*#play-buttons,*/ #rules-div/*, #join-friend-div*/ {
+    display: none;
+}
+
+#return {
+    margin-top: 3em;
+}
+
+/*Friends join system*/
+/*#return {*/
+/*margin-top: 3em;*/
+/*}*/
+
+/*.friend-buttons {*/
+/*width: 9em;*/
+/*height: 3em;*/
+/*}*/
+
+/*#join-friend-div {*/
+/*width: 100%;*/
+/*}*/
+
+/*#input {*/
+/*margin-bottom: 1em;*/
+/*}*/
+
+/*input {*/
+/*font-size: 0.95em;*/
+/*padding: 10px 10px 10px 5px;*/
+/*display: inline-block;*/
+/*border: none;*/
+/*border-bottom: 1px solid #757575;*/
+/*width: 7em;*/
+/*}*/
+
+/*input:focus {*/
+/*outline: none;*/
+/*}*/

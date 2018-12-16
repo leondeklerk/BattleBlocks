@@ -1,3 +1,23 @@
+
+.alert {
+    display: none;
+}
+
+@media screen and (max-width: 1200px){
+    .alert {
+        position: absolute;
+        bottom: 0;
+        display: inline-block;
+        width: 100%;
+        background: black;
+        opacity: 0.5;
+        padding: 2em;
+        color: #fff;
+        text-align: center;
+        font-size: 1em;
+    }
+}
+
 body {
     margin: 0;
     font-family: Roboto, sans-serif;
@@ -6,26 +26,14 @@ body {
     box-sizing: border-box;
 }
 
-#statistics {
-    display: inline-block;
-    text-align: left;
-    width: 8em;
+header h1 {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-}
-
-#statistics h1 {
+    width: 100%;
     text-align: center;
-    border-bottom: solid 1px #ababab;
-    font-size: 1em;
-    margin: 0;
-    padding: 0.5em;
-}
-
-#statistics p {
+    border-bottom: solid 0.01em #ababab;
+    font-size: 3em;
     font-weight: 600;
-    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.6);
 }
 
 #container {
@@ -35,7 +43,7 @@ body {
 
 main {
     position: relative;
-    margin-top: 5%;
+    top: 10em;
     text-align: center;
     justify-content: center;
 }
@@ -49,22 +57,6 @@ main {
     align-items: center;
     width: 50em;
     height: 30em;
-}
-
-#goal-text, header, #join-message {
-    text-align: center;
-    border-bottom: solid 0.1em #ababab;
-    font-size: 1.3em;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.6);
-    margin: 0;
-}
-
-#join-message {
-    width: 50%;
-    margin: auto auto 2em auto;
-    font-size: 1em;
-    color: rgba(0, 0, 0, 0.9);;
 }
 
 button {
@@ -85,187 +77,3 @@ button:hover {
     transition: background 0.5s;
 }
 
-.button-container {
-    float: right;
-    width: 49.5%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#image-div {
-    float: left;
-    width: 49.5%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#controls-div {
-    display: flex;
-    justify-content: space-between;
-}
-
-.control-img {
-    margin: 1em 3em 0 3em;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-}
-
-#play-buttons button, #main-buttons button {
-    display: block;
-}
-
-#return {
-    margin-top: 3em;
-}
-
-.friend-buttons {
-    width: 9em;
-    height: 3em;
-}
-
-#join-friend-div {
-    width: 100%;
-}
-
-#input {
-    margin-bottom: 1em;
-}
-
-input {
-    font-size: 0.95em;
-    padding: 10px 10px 10px 5px;
-    display: inline-block;
-    border: none;
-    border-bottom: 1px solid #757575;
-    width: 7em;
-}
-
-input:focus {
-    outline: none;
-}
-
-#play-buttons, #rules-div, #join-friend-div {
-    display: none;
-}
-
-/** game **/
-.game-board {
-    height: 100%;
-    width: 49.5%;
-}
-
-.board-title {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 1em;
-}
-
-.board-title p {
-    text-align: center;
-    border-bottom: solid 1px #ababab;
-    font-size: 1.3em;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.6);
-    margin: 0;
-    width: 75%;
-}
-
-.board-bottom p {
-    font-size: 1.1em;
-}
-
-.board-bottom {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-
-#left-board {
-    float: left;
-    border-right: solid 1px #ababab;
-}
-
-#right-board {
-    float: right;
-    border-left: solid 1px #ababab;
-}
-
-#game-card {
-    width: 70em;
-    height: 35em;
-}
-
-.list-row-empty {
-    height: 0.4em;
-}
-
-td {
-
-    background: rgba(42, 42, 42, 0.6);
-    border: 0.01em solid rgb(42, 42, 42);
-    width: 0.5em;
-    height: 0.5em;
-}
-
-#ships-list-left {
-    float: left;
-    margin: 3em 0 0 3em;
-}
-
-#ships-list-right {
-    float: right;
-    margin: 3em 3em 0 0;
-}
-
-/** gameboard **/
-#game-board-left, #game-board-right {
-    width: fit-content;
-    display: inline-block;
-    margin-top: 3em;
-    border: 0.01em solid #ababab;
-}
-
-.board-row {
-    line-height: 0;
-}
-
-.board-square {
-    width: 2em;
-    height: 2em;
-    display: inline-block;
-    border: 0.01em solid #ababab;
-}
-
-/*.board-square:hover {*/
-/*background: #3f3f3f;*/
-/*border: 0.01em solid #3f3f3f;*/
-/*}*/
-
-.occupied {
-    background: rgba(42, 42, 42, 0.6);
-    border: 0.01em solid rgb(42, 42, 42);
-}
-
-.old, .inactive {
-    opacity: 0.5;
-}
-
-.new {
-    /*background: lightgreen;*/
-    border: 0.01em solid lightgreen;
-    background: rgba(144, 238, 144, 0.3);
-}
-
-.hit, .destroyed, .error {
-    background: rgba(255, 0, 0, 0.3);
-    border: 0.01em solid red;
-}
-
-.miss {
-    background: rgba(30, 144, 255, 0.3);
-    /*background: dodgerblue;*/
-    border: 0.01em solid dodgerblue;
-}
