@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Raleway:200|Roboto:100" rel="stylesheet">
 </head>
-<body>
+<body id="fullscreen">
 <audio id="sounds">
     <source src="sounds">
 </audio>
@@ -118,9 +118,10 @@
             </div>
             <script type="text/javascript" src="javascripts/ui.js"></script>
             <script type="text/javascript" src="javascripts/gameboard.js"></script>
-
         </div>
     </div>
 </main>
+<button onclick="openFullscreen();" id="full">Fullscreen</button>
+<button onclick="closeFullscreen();" id="no-full">Exit fullscreen</button>
 </body>
 </html>

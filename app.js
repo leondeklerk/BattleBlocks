@@ -112,7 +112,7 @@ wss.on('connection', function connection(ws) { //when a new person connects
         console.log(con.id + " disconnected ...");
         let gameObj = websockets[con.id]; //get the game the connection belongs to
 
-        if (gameObj.player1 === con && gameObj.player2 === null) { //if player one disconnects before player two we will end up with a game with only player two so we create a new game instead
+        if (gameObj.player1 !== null && gameObj.player1 === con && gameObj.player2 === null) { //if player one disconnects before player two we will end up with a game with only player two so we create a new game instead
             currentGame = new Game(stats.gamesInitialized++); //create a new current game and increase the counter
         }
 
