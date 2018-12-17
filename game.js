@@ -1,15 +1,17 @@
-var game = function (gameID) {
-    this.player1 = null;
-    this.player2 = null;
-    this.id = gameID;
-    this.gameState = "0 PLAYERS";
+/** game module**/
+var game = function (gameID) { //takes a id for this game
+    this.player1 = null; //player 1 of this game
+    this.player2 = null; //player 2 of this game
+    this.id = gameID; //id
+    this.gameState = "0 PLAYERS"; //state the game is currently in, 0 players joint by default
 };
 
-
+/** function of the game object that indicated if 2 players have joined the game**/
 game.prototype.hasTwoConnectedPlayers = function () {
-    return (this.gameState === "2 PLAYERS");
+    return (this.gameState === "2 PLAYERS"); //return true if the state of the game is at 2 player joined.
 };
 
+/** function of the game object to add a player, named p**/
 game.prototype.addPlayer = function (p) {
 
     // console.assert(p instanceof Object, "%s: Expecting an object (WebSocket), got a %s", arguments.callee.name, typeof p);
@@ -26,15 +28,15 @@ game.prototype.addPlayer = function (p) {
     //     this.setStatus("2 PLAYERS");
     // }
 
-    if (this.player1 == null) {
-        this.player1 = p;
-        this.gameState = "1 PLAYER";
-        return "1";
+    if (this.player1 == null) { //if there is no player 1 this will become player 1
+        this.player1 = p; //set player one with name p
+        this.gameState = "1 PLAYER"; //update the game state to 1 player joined
+        return "1"; //return the type of player (either player 1 or player 2)
     }
-    else {
-        this.player2 = p;
-        this.gameState = "2 PLAYERS";
-        return "2";
+    else { //if there already is a player 1 this will be player 2
+        this.player2 = p; //set player two with name p
+        this.gameState = "2 PLAYERS"; //update the state of the game to two players
+        return "2"; //return the type of layer (either player 1 or player 2)
     }
 };
 

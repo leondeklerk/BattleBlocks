@@ -105,7 +105,7 @@
 /**animated board*/
 
 .ship-hider {
-    border: white solid 5em;
+    border: white solid 5.2em;
     width: 12.02em;
     height: 12.02em;
     position: absolute;
@@ -157,6 +157,17 @@
     animation-duration: 8s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+}
+
+
+@-moz-document url-prefix() {
+    #ship1 {
+        left: -8em;
+    }
+
+    #ship2 {
+        left: -8.55em;
+    }
 }
 
 .square {
