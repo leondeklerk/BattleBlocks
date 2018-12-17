@@ -16,7 +16,8 @@
 <main>
     <div id="statistics">
         <h1>STATISTICS</h1>
-        <p id="first-stat"><%= gamesInitialized %>
+        <p id="first-stat"><%= gamesInitialized %> <!--insert the games initialized in escaped form-->
+            <!--determine whether to append game or games-->
             <%if (gamesInitialized != 1) { %>
                 games
             <% } else { %>
@@ -24,15 +25,22 @@
             <% } %>
             initialized
         </p>
-        <p id="second-stat"><%= gamesCompleted %>
+        <p id="second-stat"><%= gamesCompleted %> <!-- insert the games completed stat in escaped form -->
             completed</p>
         <p id="third-stat">
             <%= shipsDestroyed %>
-            ships destroyed
+            <!--determine whether to append  ship or ships-->
+            <%if (shipsDestroyed != 1) { %>
+                ships
+            <% } else { %>
+                ship
+            <% } %>
+            destroyed
         </p>
         <p id="fourth">
             You connected
-            <%= numConnections %>
+            <%= numConnections %> <!-- insert the number of connections made by this client (gotten from a user cookie) -->
+            <!--determine whether to append times or time -->
             <%if (numConnections != 1) { %>
                 times
             <% } else { %>
@@ -74,17 +82,17 @@
             <div id="image-div">
                 <div class="ship-hider">
                 </div>
-                    <div class="grid-holder">
-                        <div class="ship" id="ship1">
-                            <div class="square"></div><div class="square"></div><div class="square"></div>
-                        </div>
-                        <div class="ship" id="ship2">
-                            <div class="square"></div><div class="square"></div><div class="square"></div><div class="square"></div>
-                        </div>
-                        <div class="ship" id="ship3">
-                            <div class="square"></div><div class="square" id="hit1"></div><div class="square" id="hit2"></div>
-                        </div>
+                <div class="grid-holder">
+                    <div class="ship" id="ship1">
+                        <div class="square"></div><div class="square"></div><div class="square"></div>
                     </div>
+                    <div class="ship" id="ship2">
+                        <div class="square"></div><div class="square"></div><div class="square"></div><div class="square"></div>
+                    </div>
+                    <div class="ship" id="ship3">
+                        <div class="square"></div><div class="square" id="hit1"></div><div class="square" id="hit2"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="rules-div" class="card">
