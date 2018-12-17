@@ -26,8 +26,7 @@
 }
 
 .board-bottom-button, #return-to-splash {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin: 0.5em 0;
 }
 
 #left-board {
@@ -45,6 +44,8 @@
     height: 35em;
 }
 
+
+/** Ships list **/
 .list-row-empty {
     height: 0.4em;
 }
@@ -66,6 +67,8 @@ td {
     margin: 3em 3em 0 0;
 }
 
+
+/** gameboard **/
 #game-board-left, #game-board-right {
     width: fit-content;
     display: inline-block;
@@ -84,7 +87,7 @@ td {
     border: 0.01em solid #ababab;
 }
 
-#game-board-right .board-square:hover:not(.inactive) {
+#game-board-right .board-square:hover:not(.inactive):not(.hit):not(.miss) {
     transition: all 0.1s;
     background: rgba(42, 42, 42, 0.3);
     cursor: crosshair;
@@ -93,6 +96,31 @@ td {
 .occupied {
     background: rgba(42, 42, 42, 0.6);
     border: 0.01em solid rgb(42, 42, 42);
+}
+
+.occupied.Carrier {
+    background:  rgba(33, 33, 33, 0.8);
+    border: 0.01em solid rgb(33, 33, 33);
+}
+
+.occupied.Battleship {
+    background:  rgba(33, 33, 33, 0.7);
+    border: 0.01em solid rgb(43, 43, 43)
+}
+
+.occupied.Cruiser {
+    background:  rgba(33, 33, 33, 0.6);
+    border: 0.01em solid rgb(53, 53, 53)
+}
+
+.occupied.Destroyer {
+    background:  rgba(33, 33, 33, 0.5);
+    border: 0.01em solid rgb(63, 63, 63)
+}
+
+.occupied.Frigate {
+    background:  rgba(33, 33, 33, 0.4);
+    border: 0.01em solid rgb(73, 73, 73)
 }
 
 .old, .inactive {
