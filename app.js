@@ -1,6 +1,7 @@
 var express = require('express');
 var http = require("http");
 var WebSocket = require('ws');
+var favicon = require("serve-favicon");
 
 var routes = require("./routes/routes");
 
@@ -13,6 +14,7 @@ var cookies = require("cookie-parser");
 var credentials = require("./credentials");
 
 app.use(express.static(__dirname + "/public"));
+app.use(favicon(__dirname + "/public/images/favicon.png"));
 app.use(cookies(credentials.cookieSecret));
 app.set('view engine', 'ejs');
 app.get("/join", routes);
@@ -28,7 +30,7 @@ setInterval(function () {
     for (let i in websockets) {
         if (websockets.hasOwnProperty(i)) {
             let gameObj = websockets[i];
-            if (gameObj.gameState === "ABORTED") {
+            if (gameObj.gameState === "ENDED") {
                 console.log("\tDeleting element " + i);
                 delete websockets[i];
             }
@@ -68,7 +70,6 @@ wss.on('connection', function connection(ws) {
         currentGame = new Game(stats.gamesInitialized++);
     }
 
-
     con.on("message", function incoming(message) {
 
         let oMsg = JSON.parse(message);
@@ -76,14 +77,13 @@ wss.on('connection', function connection(ws) {
         let gameObj = websockets[con.id];
 
         if (oMsg.type === "FIRED_AT") {
-            gameObj.setStatus("FIRED");
+            gameObj.gameState = "FIRED";
         } else if (oMsg.type === "WON") {
-            gameObj.setStatus(con.id.toString());
+            gameObj.gameState = "won";
             stats.gamesCompleted++;
-        } else if (oMsg.type === "SHIP_DESTROYED"){
+        } else if (oMsg.type === "SHIP_DESTROYED") {
             stats.shipsDestroyed++;
         }
-
 
         let isPlayer1 = (gameObj.player1 === con);
 
@@ -93,55 +93,33 @@ wss.on('connection', function connection(ws) {
                 gameObj.player2.send(message);
             }
 
-            if (oMsg.type === "FIRED_AT") {
-                gameObj.setStatus("FIRED");
-                console.log("1 FIRED");
-            } else if (oMsg.type === "WON") {
-                gameObj.setStatus("2");
-                stats.gamesCompleted++;
-                console.log("2 WON");
-            }
         } else {
             console.log("send to P1");
             if (gameObj.player1 !== null) {
                 gameObj.player1.send(message);
             }
-
-            if (oMsg.type === "FIRED_AT") {
-                gameObj.setStatus("FIRED");
-                console.log("2 FIRED");
-            } else if (oMsg.type === "WON") {
-                gameObj.setStatus("1");
-                stats.gamesCompleted++;
-                console.log("1 WON");
-            }
         }
     });
 
     con.on("close", function () {
-
         console.log(con.id + " disconnected ...");
         let gameObj = websockets[con.id];
 
-        if(gameObj.player1 === con && gameObj.player2 === null){
+        if (gameObj.player1 === con && gameObj.player2 === null) {
             currentGame = new Game(stats.gamesInitialized++);
         }
 
-        if (gameObj.isValidTransition(gameObj.gameState, "ABORTED")) {
-            gameObj.setStatus("ABORTED");
-            try {
-                gameObj.player1.close();
-                gameObj.player1 = null;
-            } catch (e) {
-                console.log("Player 1 closing: " + e);
-            }
+        gameObj.gameState = "ENDED";
+        try {
+            gameObj.player1.close();
+            gameObj.player1 = null;
+        } catch (e) {
+        }
 
-            try {
-                gameObj.player2.close();
-                gameObj.player2 = null;
-            } catch (e) {
-                console.log("Player 2 closing: " + e);
-            }
+        try {
+            gameObj.player2.close();
+            gameObj.player2 = null;
+        } catch (e) {
         }
     });
 });

@@ -1,45 +1,3 @@
-// const AVAILABLE = 0;
-// const SHIP = 1;
-//
-// function Ship(name) {
-//     this.name = name;
-//     this.length = 0;
-// }
-//
-// function board() {
-//     this.squares = undefined;
-//     this.shipsData = [{"name": "Carrier", "length": 5},
-//         {"name": "Battleship", "length": 4},
-//         {"name": "Cruiser", "length": 3},
-//         {"name": "Destroyer", "length": 3},
-//         {"name": "Frigate", "length": 2}];
-//     this.ships = [];
-//
-//     this.initialize = function () {
-//         for (let i = 0; i < 5; i++) {
-//             this.ships[i] = new Ship(this.shipsData[i].name);
-//             this.ships[i].length = this.shipsData[i].length;
-//         }
-//
-//         for(let i = 0; i < 10; i++){
-//             for(let j = 0; j < 10; j++){
-//                 this.squares[i][j] = AVAILABLE;
-//             }
-//         }
-//     };
-//
-//     this.isValidSquare = function (row, column) {
-//         return this.squares[row][column] !== undefined;
-//     }
-//
-//     this.isSquareAvailable = function (row, column) {
-//         return (this.isValidSquare(row, column) && this.squares[row][column] === AVAILABLE )
-//     }
-//
-//     this.shootAt
-//
-// }
-
 let socket = new WebSocket("ws://localhost:8080");
 
 socket.onopen = function () {
@@ -119,8 +77,16 @@ function disconnect(){
 let otherReady = false;
 let ready = false;
 let turn = true;
+let hitSound = new Audio("../sounds/hit.mp3");
+hitSound.volume = 0.1;
+let missSound = new Audio("../sounds/miss.mp3");
+missSound.volume = 0.1;
+let messageSound = new Audio("../sounds/message.mp3");
+messageSound.volume = 0.1;
+
 var output = {
     log: function (message) {
+        messageSound.play();
         $("#log").append("<p class='console-item'>" + message + "</p>");
         updateScroll();
     }
@@ -399,8 +365,8 @@ function processFired(row, column) {
     let curSquare = "#game-board-left " + "#" + row + column;
     let message;
     if ($(curSquare).hasClass('occupied')) {
+        hitSound.play();
         let shipName = $(curSquare).attr('class').split(/\s+/)[2];
-        console.log(shipName);
         $(curSquare).addClass("hit").removeClass("occupied").removeClass(shipName);
         message = {
             type: "FIRED_RESULT",
@@ -408,12 +374,11 @@ function processFired(row, column) {
             row: row,
             column: column
         };
-        console.log("HIT! :(");
         if ($("#game-board-left " + "." + shipName).length === 0) {
-            console.log(shipName);
             removeList(shipName);
         }
     } else if (!$(curSquare).hasClass('hit') && !$(curSquare).hasClass('miss')) {
+        missSound.play();
         $(curSquare).addClass("miss");
         message = {
             type: "FIRED_RESULT",

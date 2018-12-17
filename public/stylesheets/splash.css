@@ -63,6 +63,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-left: solid 1px #ababab;
 }
 
 #image-div {
@@ -72,6 +73,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-right: solid 1px #ababab;
 }
 
 #controls-div {
@@ -92,14 +94,172 @@
     display: block;
 }
 
-
-
 /*#play-buttons,*/ #rules-div/*, #join-friend-div*/ {
     display: none;
 }
 
 #return {
     margin-top: 3em;
+}
+
+/**animated board*/
+
+.ship-hider {
+    border: white solid 5em;
+    width: 12.02em;
+    height: 12.02em;
+    position: absolute;
+    z-index: 1000;
+}
+
+.grid-holder {
+    width: 12em;
+    height: 12em;
+    background: rgba(30, 144, 255, 0.1);
+    border: 0.01em solid dodgerblue;
+}
+
+.ship {
+    position: relative;
+    height: 1.202em;
+    width: fit-content;
+    line-height: 0;
+    border: none;
+}
+
+#ship1 {
+    top: 1.202em;
+    left: -3.8em;
+    animation-name: boatMoveLeftShort;
+    animation-delay: 3s;
+    animation-duration: 8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+#ship2 {
+    left: -5em;
+    top: 7.2em;
+    animation-name: boatMoveLeftLong;
+    animation-delay: 5s;
+    animation-duration: 8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+
+#ship3 {
+    left: 7.2em;
+    top: -6.2em;
+    width: 1.202em;
+    height: fit-content;
+    animation-name: boatMoveUpShort;
+    animation-duration: 8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.square {
+    display: inline-block;
+    border: 0.01em solid rgb(42, 42, 42);
+    width: 1.2em;
+    height: 1.2em;
+    background: rgba(42, 42, 42, 0.6);
+}
+
+#ship3 .square {
+    display: block;
+}
+
+#hit1 {
+    animation-name: fire1;
+    animation-duration: 8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+#hit2 {
+    animation-name: fire2;
+    animation-duration: 8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes fire1 {
+    38%{
+        background: rgba(42, 42, 42, 0.6);
+        border: 0.01em solid rgb(42, 42, 42);
+    }
+    40% {
+        background: rgba(255, 0, 0, 0.3);
+        border: 0.01em solid red;
+    }
+    to {
+        background: rgba(255, 0, 0, 0.3);
+        border: 0.01em solid red;
+    }
+}
+
+@keyframes fire2 {
+    58%{
+        background: rgba(42, 42, 42, 0.6);
+        border: 0.01em solid rgb(42, 42, 42);
+    }
+    60% {
+        background: rgba(255, 0, 0, 0.3);
+        border: 0.01em solid red;
+    }
+    to {
+        background: rgba(255, 0, 0, 0.3);
+        border: 0.01em solid red;
+    }
+}
+@keyframes boatMoveLeftShort {
+    from {
+        transform: translateX(0);
+    }
+    10% {
+        transform: translateX(0);
+    }
+    90% {
+        transform: translateX(15.9em);
+    }
+    to {
+        transform: translateX(15.9em);
+    }
+}
+
+
+@keyframes boatMoveLeftLong {
+    from {
+        transform: translateX(0);
+    }
+    10% {
+        transform: translateX(0);
+    }
+    90% {
+        transform: translateX(17.1em);
+    }
+    to {
+        transform: translateX(17.1em);
+
+    }
+}
+
+@keyframes boatMoveUpShort {
+    from {
+        transform: translateY(0);
+    }
+    10% {
+        transform: translateY(0);
+    }
+    90% {
+        transform: translateY(15.9em);
+    }
+
+    to {
+        transform: translateY(15.9em);
+    }
 }
 
 /*Friends join system*/
