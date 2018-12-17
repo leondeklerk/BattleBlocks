@@ -106,8 +106,8 @@
 
 .ship-hider {
     border: white solid 5.2em;
-    width: 12.02em;
-    height: 12.02em;
+    width: 12.07em;
+    height: 12.07em;
     position: absolute;
     z-index: 1000;
 }
@@ -157,17 +157,6 @@
     animation-duration: 8s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-}
-
-
-@-moz-document url-prefix() {
-    #ship1 {
-        left: -8em;
-    }
-
-    #ship2 {
-        left: -8.55em;
-    }
 }
 
 .square {
@@ -272,6 +261,76 @@
         transform: translateY(15.9em);
     }
 }
+
+/** fixes for firefox animations **/
+@-moz-document url-prefix() {
+    .ship-hider {
+        border: white solid 5.3em;
+    }
+    #ship1 {
+        left: -8.05em;
+    }
+
+    #ship2 {
+        left: -8.7em;
+    }
+
+    #ship3 {
+        top: -6.55em;
+    }
+
+    @keyframes boatMoveLeftShort {
+        from {
+            transform: translateX(0);
+        }
+        10% {
+            transform: translateX(0);
+        }
+        90% {
+            transform: translateX(16.2em);
+        }
+        to {
+            transform: translateX(16.2em);
+        }
+    }
+
+
+    @keyframes boatMoveLeftLong {
+        from {
+            transform: translateX(0);
+        }
+        10% {
+            transform: translateX(0);
+        }
+        90% {
+            transform: translateX(17.4em);
+        }
+        to {
+            transform: translateX(17.4em);
+
+        }
+    }
+
+    @keyframes boatMoveUpShort {
+        from {
+            transform: translateY(0);
+        }
+        10% {
+            transform: translateY(0);
+        }
+        90% {
+            transform: translateY(16.2em);
+        }
+
+        to {
+            transform: translateY(16.2em);
+        }
+    }
+
+}
+
+
+
 
 /*Friends join system*/
 /*#return {*/
