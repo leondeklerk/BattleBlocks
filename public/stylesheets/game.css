@@ -172,6 +172,14 @@ td {
 .console-item:active {
     font-size: 0.9em;
 }
+
+#win {
+    color: red;
+}
+
+#lost {
+    color:dodgerblue;
+}
 .console-item::before {
     content: " > ";
 }
