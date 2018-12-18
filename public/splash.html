@@ -5,6 +5,7 @@
     <title>BattleBlocks</title>
     <link type="text/css" rel="stylesheet" href="stylesheets/splash.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css?family=Raleway:200|Roboto:100" rel="stylesheet">
 </head>
 <body>
@@ -18,6 +19,7 @@
         <p id="first-stat">Stat 1</p>
         <p id="second-stat">Stat 2</p>
         <p id="third-stat">Stat 3</p>
+        <p id="fourth">Cookie</p>
     </div>
     <div id="container">
         <div id="default-splash" class="card">
@@ -26,32 +28,44 @@
                     <form action="/join" method="get">
                         <button id="play" type="submit">PLAY</button>
                     </form>
-                    <button id="rules" onclick="gotToRules()">RULES</button>
+                    <button id="rules" onclick="gotToRules()">CONTROLS</button>
                 </div>
                 <!--Optional join friend screens that are not yet implemented-->
                 <!--<div id="play-buttons">-->
-                    <!--<form action="/join" method="get">-->
-                        <!--<button id="join-random" type="submit">JOIN RANDOM</button>-->
-                    <!--</form>-->
-                    <!--<button id="join-friend" onclick="joinFriend()">JOIN FRIEND</button>-->
-                    <!--<button id="host-game">HOST GAME</button>-->
-                    <!--<button id="cancel" onclick="setButtonDiv()">CANCEL</button>-->
+                <!--<form action="/join" method="get">-->
+                <!--<button id="join-random" type="submit">JOIN RANDOM</button>-->
+                <!--</form>-->
+                <!--<button id="join-friend" onclick="joinFriend()">JOIN FRIEND</button>-->
+                <!--<button id="host-game">HOST GAME</button>-->
+                <!--<button id="cancel" onclick="setButtonDiv()">CANCEL</button>-->
                 <!--</div>-->
                 <!--<div id="join-friend-div">-->
-                    <!--<h3 id="join-message">Enter your friends code</h3>-->
-                    <!--<form method="post" action="" novalidate>-->
-                        <!--<div id="input">-->
-                            <!--<label for="friend-code">#</label>-->
-                            <!--<input id="friend-code" name="friend-code" type="text" placeholder="00000" maxlength="5"-->
-                                   <!--minlength="5">-->
-                        <!--</div>-->
-                        <!--<button class="friend-buttons" type="submit">JOIN</button>-->
-                    <!--</form>-->
-                    <!--<button class="friend-buttons" onclick="setPlayDiv()">CANCEL</button>-->
+                <!--<h3 id="join-message">Enter your friends code</h3>-->
+                <!--<form method="post" action="" novalidate>-->
+                <!--<div id="input">-->
+                <!--<label for="friend-code">#</label>-->
+                <!--<input id="friend-code" name="friend-code" type="text" placeholder="00000" maxlength="5"-->
+                <!--minlength="5">-->
+                <!--</div>-->
+                <!--<button class="friend-buttons" type="submit">JOIN</button>-->
+                <!--</form>-->
+                <!--<button class="friend-buttons" onclick="setPlayDiv()">CANCEL</button>-->
                 <!--</div>-->
             </div>
             <div id="image-div">
-                <img src="https://via.placeholder.com/250" alt="https://via.placeholder.com/250">
+                <div class="ship-hider">
+                </div>
+                <div class="grid-holder">
+                    <div class="ship" id="ship1">
+                        <div class="square"></div><div class="square"></div><div class="square"></div>
+                    </div>
+                    <div class="ship" id="ship2">
+                        <div class="square"></div><div class="square"></div><div class="square"></div><div class="square"></div>
+                    </div>
+                    <div class="ship" id="ship3">
+                        <div class="square"></div><div class="square" id="hit1"></div><div class="square" id="hit2"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="rules-div" class="card">
@@ -60,29 +74,28 @@
             </div>
             <div id="controls-div">
                 <div>
-                    <img class="control-img" src="https://via.placeholder.com/150"
+                    <img class="control-img" src="images/drag.gif"
                          alt="https://via.placeholder.com/150">
-                    <h3>Control #1</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-                        vestibulum.</p>
+                    <h3>Drag & Drop</h3>
+                    <p>Drag your ships to te desired position</p>
                 </div>
                 <div>
-                    <img class="control-img" src="https://via.placeholder.com/150"
+                    <img class="control-img" src="images/rotate.gif"
                          alt="https://via.placeholder.com/150">
-                    <h3>Control #2</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-                        vestibulum.</p>
+                    <h3>Rotate</h3>
+                    <p>Rotate your ships into the correct position</p>
                 </div>
                 <div>
-                    <img class="control-img" src="https://via.placeholder.com/150"
+                    <img class="control-img" src="images/fire.gif"
                          alt="https://via.placeholder.com/150">
-                    <h3>Control #3</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vestibulum.</p>
+                    <h3>Fire</h3>
+                    <p>Fire on the enemy ships</p>
                 </div>
             </div>
             <button id="return" onclick="returnToDef()">Got it!</button>
         </div>
     </div>
 </main>
+<script type='text/javascript' src='javascripts/ui.js'></script>
 </body>
 </html>
