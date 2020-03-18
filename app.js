@@ -11,11 +11,11 @@ var app = express(); //bind the express module to app
 var stats = require("./statTracker"); //import the statistics counter module
 var Game = require("./game"); //add the game module
 var cookies = require("cookie-parser"); //add the cookie-parser module
-var credentials = require("./credentials"); //add the credentials module
+require('dotenv').config();
 
 app.use(express.static(__dirname + "/public")); //defines the root path for the static files (html css)
 app.use(favicon(__dirname + "/public/images/favicon.png")); //specify the path for the favicon (icon in the tab)
-app.use(cookies(credentials.cookieSecret)); //specify to use the cookie parser with the correct credentials information
+app.use(cookies(process.env.COOKIE_SECRET)); //specify to use the cookie parser with the correct credentials information
 app.set('view engine', 'ejs'); //set the view engine to ejs
 app.get("/join", routes); //specify the route for /join in the routes.js file
 app.get("/quit", routes); //specify the route for /quit in the routes.js file
